@@ -10,6 +10,122 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400&family=Poppins:wght@300;400;500;600;700&family=Amiri:wght@400;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    .teacher-card {
+      background: var(--white);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border);
+      transition: var(--transition);
+      text-align: center;
+      cursor: pointer;
+      display: block;
+      color: inherit;
+      text-decoration: none;
+    }
+    .teacher-card:hover {
+      transform: translateY(-6px);
+      box-shadow: var(--shadow-lg);
+      border-color: rgba(201,162,39,0.4);
+      color: inherit;
+    }
+    .teacher-photo {
+      height: 160px;
+      background: linear-gradient(135deg, var(--navy), var(--blue-mid));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .teacher-photo::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 60 60'%3E%3Cg fill='none' stroke='rgba(201%2C162%2C39%2C0.12)' stroke-width='1'%3E%3Cpolygon points='30,4 35,20 52,15 42,29 55,38 38,40 35,57 30,43 25,57 22,40 5,38 18,29 8,15 25,20'/%3E%3C/g%3E%3C/svg%3E");
+      background-size: 60px;
+    }
+    .teacher-avatar {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Playfair Display', serif;
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--white);
+      box-shadow: var(--shadow-gold);
+      position: relative;
+      z-index: 1;
+    }
+    .teacher-info { padding: 1.25rem 1rem 1.5rem; }
+    .teacher-info h3 {
+      font-size: 1rem;
+      margin-bottom: 0.2rem;
+      color: var(--navy);
+    }
+    .teacher-arabic {
+      font-family: 'Amiri', serif;
+      font-size: 0.95rem;
+      color: var(--gold-dark);
+      direction: rtl;
+      margin-bottom: 0.5rem;
+      line-height: 1.6;
+    }
+    .teacher-cred {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      font-weight: 500;
+      margin-bottom: 0.75rem;
+    }
+    .view-bio-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--blue);
+      transition: var(--transition);
+    }
+    .teacher-card:hover .view-bio-link {
+      color: var(--gold);
+      gap: 0.55rem;
+    }
+    .category-header {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      margin-bottom: 2.25rem;
+    }
+    .category-header::before, .category-header::after {
+      content: '';
+      flex: 1;
+      height: 2px;
+      background: linear-gradient(to right, transparent, var(--border));
+    }
+    .category-header::after {
+      background: linear-gradient(to left, transparent, var(--border));
+    }
+    .category-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 0.5rem 1.25rem;
+      border-radius: 50px;
+      white-space: nowrap;
+    }
+    .cat-navy { background: var(--navy); color: var(--gold); }
+    .cat-gold { background: var(--gold); color: var(--navy); }
+    .cat-blue { background: var(--blue); color: var(--white); }
+  </style>
 </head>
 <body>
 
@@ -58,235 +174,253 @@
         <i class="fas fa-chevron-right"></i>
         <span>Faculty</span>
       </div>
+      <p class="arabic" style="font-size:1.2rem;margin-bottom:0.4rem;">سِلْسِلَةُ الْعِلْمِ</p>
       <h1>Our Faculty</h1>
-      <p>Our distinguished scholars bring decades of experience and authentic knowledge from the world's leading Islamic institutions.</p>
+      <p>Those from whom knowledge was received — may Allah preserve them all.</p>
     </div>
   </section>
 
-  <!-- LEADERSHIP -->
+  <!-- SENIOR MUFTIS -->
   <section class="section-pad">
     <div class="container">
-      <div class="title-block">
-        <h2 class="section-title">Institute Leadership</h2>
-        <span class="gold-line"></span>
-        <p class="section-subtitle">Guiding Darul Uloom New York with wisdom, scholarship, and dedication.</p>
+      <div class="category-header">
+        <span class="category-label cat-navy"><i class="fas fa-star"></i> Senior Muftis</span>
       </div>
-      <div class="faculty-leadership">
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem;">
 
-        <div class="faculty-card">
-          <div class="faculty-photo">
-            <div class="faculty-avatar">M</div>
+        <a href="faculty/mufti-mizanur-rahman.html" class="teacher-card">
+          <div class="teacher-photo"><div class="teacher-avatar">M</div></div>
+          <div class="teacher-info">
+            <h3>Mufti Mizanur Rahman</h3>
+            <p class="teacher-arabic">مفتي ميزان الرحمن سيد</p>
+            <p class="teacher-cred">Senior Mufti · Senior Muḥaddith</p>
+            <span class="view-bio-link">View Biography <i class="fas fa-arrow-right"></i></span>
           </div>
-          <div class="faculty-info">
-            <h3>Mufti Muhammad Rashid</h3>
-            <div class="faculty-title">Muhtamim (Principal)</div>
-            <div class="faculty-dept">Institute Administration</div>
-            <p>
-              Mufti Muhammad Rashid is a graduate of Darul Uloom Karachi and holds an Iftaa degree.
-              With over 25 years of teaching experience, he leads Darul Uloom New York with a commitment
-              to authentic scholarship and community service. He has authored several works in Islamic jurisprudence
-              and is a respected voice in the New York Muslim community.
-            </p>
-          </div>
-        </div>
+        </a>
 
-        <div class="faculty-card">
-          <div class="faculty-photo">
-            <div class="faculty-avatar">A</div>
+        <a href="faculty/mufti-manzoor.html" class="teacher-card">
+          <div class="teacher-photo"><div class="teacher-avatar">M</div></div>
+          <div class="teacher-info">
+            <h3>Mufti Manzoor</h3>
+            <p class="teacher-arabic">مفتي منظور</p>
+            <p class="teacher-cred">Senior Mufti · Muḥaddith</p>
+            <span class="view-bio-link">View Biography <i class="fas fa-arrow-right"></i></span>
           </div>
-          <div class="faculty-info">
-            <h3>Sheikh Abdullah Rahman</h3>
-            <div class="faculty-title">Nazim al-Taleem (Academic Director)</div>
-            <div class="faculty-dept">Academic Affairs</div>
-            <p>
-              Sheikh Abdullah Rahman graduated from Darul Uloom Deoband and pursued further studies in
-              Hadith sciences in Madinah. He oversees the academic curriculum and faculty development
-              at the institute, ensuring the highest standards of Islamic education for all students.
-            </p>
+        </a>
+
+        <a href="faculty/mufti-abdul-muqtadir.html" class="teacher-card">
+          <div class="teacher-photo"><div class="teacher-avatar">A</div></div>
+          <div class="teacher-info">
+            <h3>Mufti Abdul Muqtadir</h3>
+            <p class="teacher-arabic">مفتي عبد المقتدر</p>
+            <p class="teacher-cred">Senior Muḥaddith</p>
+            <span class="view-bio-link">View Biography <i class="fas fa-arrow-right"></i></span>
           </div>
-        </div>
+        </a>
+
+        <a href="faculty/mufti-mahdi-alam.html" class="teacher-card">
+          <div class="teacher-photo"><div class="teacher-avatar">M</div></div>
+          <div class="teacher-info">
+            <h3>Mufti Mahdi Alam</h3>
+            <p class="teacher-arabic">مفتي مهدي عالم</p>
+            <p class="teacher-cred">Scholar of Islamic Sciences</p>
+            <span class="view-bio-link">View Biography <i class="fas fa-arrow-right"></i></span>
+          </div>
+        </a>
 
       </div>
     </div>
   </section>
 
-  <!-- BOYS FACULTY -->
+  <!-- MUHADDITHIN -->
   <section class="section-pad bg-off-white pattern-light">
     <div class="container">
-      <div style="display: flex; align-items: center; gap: 1.5rem; margin-bottom: 3rem;">
-        <div style="flex: 1; height: 2px; background: linear-gradient(to right, transparent, var(--border));"></div>
-        <div style="text-align: center; white-space: nowrap;">
-          <span style="display: inline-flex; align-items: center; gap: 0.6rem; background: var(--navy); color: var(--gold); font-size: 0.8rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; padding: 0.5rem 1.25rem; border-radius: 50px;">
-            <i class="fas fa-user"></i> Boys Department Faculty
-          </span>
-        </div>
-        <div style="flex: 1; height: 2px; background: linear-gradient(to left, transparent, var(--border));"></div>
+      <div class="category-header">
+        <span class="category-label cat-gold"><i class="fas fa-book"></i> Muḥaddithin</span>
       </div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem;">
 
-      <div class="faculty-grid">
+        <a href="faculty/mawlana-rafiq-ahmed.html" class="teacher-card">
+          <div class="teacher-photo"><div class="teacher-avatar">R</div></div>
+          <div class="teacher-info">
+            <h3>Mawlana Rafiq Ahmed</h3>
+            <p class="teacher-arabic">مولانا رفيق أحمد</p>
+            <p class="teacher-cred">Senior Muḥaddith</p>
+            <span class="view-bio-link">View Biography <i class="fas fa-arrow-right"></i></span>
+          </div>
+        </a>
 
-        <div class="faculty-card">
-          <div class="faculty-photo">
-            <div class="faculty-avatar">Y</div>
+        <a href="faculty/mawlana-ahmedul-haqq.html" class="teacher-card">
+          <div class="teacher-photo"><div class="teacher-avatar">A</div></div>
+          <div class="teacher-info">
+            <h3>Mawlana Ahmedul Haqq</h3>
+            <p class="teacher-arabic">مولانا أحمد الحق</p>
+            <p class="teacher-cred">Senior Muḥaddith</p>
+            <span class="view-bio-link">View Biography <i class="fas fa-arrow-right"></i></span>
           </div>
-          <div class="faculty-info">
-            <h3>Qari Yusuf Patel</h3>
-            <div class="faculty-title">Head of Hifz Department</div>
-            <div class="faculty-dept">Boys Hifz</div>
-            <p>Qari Yusuf completed his Hifz at age 12 and holds an Ijazah in the ten Qira'at. He has taught Hifz for over 15 years and has produced numerous Huffaz who serve as Imams across the country.</p>
-          </div>
-        </div>
+        </a>
 
-        <div class="faculty-card">
-          <div class="faculty-photo">
-            <div class="faculty-avatar">I</div>
+        <a href="faculty/mawlana-abdurraheem.html" class="teacher-card">
+          <div class="teacher-photo"><div class="teacher-avatar">A</div></div>
+          <div class="teacher-info">
+            <h3>Mawlana Abdurraheem</h3>
+            <p class="teacher-arabic">مولانا عبد الرحيم</p>
+            <p class="teacher-cred">Senior Muḥaddith</p>
+            <span class="view-bio-link">View Biography <i class="fas fa-arrow-right"></i></span>
           </div>
-          <div class="faculty-info">
-            <h3>Maulana Ismail Siddiqui</h3>
-            <div class="faculty-title">Alim Course — Hadith & Tafsir</div>
-            <div class="faculty-dept">Boys Alim Course</div>
-            <p>Maulana Ismail is a graduate of Jamia Uloom Islamia, Allama Binnori Town, specializing in Hadith and Tafsir sciences. He teaches Bukhari Sharif and Tafsir Jalalayn at the senior level.</p>
-          </div>
-        </div>
+        </a>
 
-        <div class="faculty-card">
-          <div class="faculty-photo">
-            <div class="faculty-avatar">U</div>
+        <a href="faculty/mawlana-suhel.html" class="teacher-card">
+          <div class="teacher-photo"><div class="teacher-avatar">S</div></div>
+          <div class="teacher-info">
+            <h3>Mawlana Suhel</h3>
+            <p class="teacher-arabic">مولانا سهيل</p>
+            <p class="teacher-cred">Muḥaddith</p>
+            <span class="view-bio-link">View Biography <i class="fas fa-arrow-right"></i></span>
           </div>
-          <div class="faculty-info">
-            <h3>Mufti Umar Farooq</h3>
-            <div class="faculty-title">Iftaa Course — Islamic Jurisprudence</div>
-            <div class="faculty-dept">Iftaa Department</div>
-            <p>Mufti Umar completed his Iftaa training under senior scholars in Pakistan and the UK. He specializes in contemporary Fiqh issues including Islamic finance, bioethics, and family law.</p>
-          </div>
-        </div>
+        </a>
 
-        <div class="faculty-card">
-          <div class="faculty-photo">
-            <div class="faculty-avatar">H</div>
+        <a href="faculty/mawlana-imtiyaz.html" class="teacher-card">
+          <div class="teacher-photo"><div class="teacher-avatar">I</div></div>
+          <div class="teacher-info">
+            <h3>Mawlana Imtiyaz</h3>
+            <p class="teacher-arabic">مولانا امتياز</p>
+            <p class="teacher-cred">Muḥaddith</p>
+            <span class="view-bio-link">View Biography <i class="fas fa-arrow-right"></i></span>
           </div>
-          <div class="faculty-info">
-            <h3>Maulana Hasan Ali</h3>
-            <div class="faculty-title">Arabic Language & Grammar</div>
-            <div class="faculty-dept">Boys Alim Course</div>
-            <p>Maulana Hasan holds a degree in Arabic linguistics from Al-Azhar University, Cairo. He teaches Arabic grammar (Nahw & Sarf), rhetoric (Balaghah), and classical Arabic literature.</p>
-          </div>
-        </div>
+        </a>
 
-        <div class="faculty-card">
-          <div class="faculty-photo">
-            <div class="faculty-avatar">F</div>
+        <a href="faculty/mawlana-muhammad-abasoomar.html" class="teacher-card">
+          <div class="teacher-photo"><div class="teacher-avatar">M</div></div>
+          <div class="teacher-info">
+            <h3>Mawlana Muhammad Abasoomar</h3>
+            <p class="teacher-arabic">مولانا محمد عباس عمر</p>
+            <p class="teacher-cred">Muḥaddith</p>
+            <span class="view-bio-link">View Biography <i class="fas fa-arrow-right"></i></span>
           </div>
-          <div class="faculty-info">
-            <h3>Maulana Farhan Qureshi</h3>
-            <div class="faculty-title">Nazira & Maktab Instructor</div>
-            <div class="faculty-dept">Boys Nazira & Maktab</div>
-            <p>Maulana Farhan is passionate about teaching beginners the beauty of Quran recitation. He has specialized training in Tajweed and brings energy and patience to his younger students.</p>
-          </div>
-        </div>
+        </a>
 
-        <div class="faculty-card">
-          <div class="faculty-photo">
-            <div class="faculty-avatar">Z</div>
+        <a href="faculty/qari-mujeeb.html" class="teacher-card">
+          <div class="teacher-photo"><div class="teacher-avatar">M</div></div>
+          <div class="teacher-info">
+            <h3>Qari Mujeeb</h3>
+            <p class="teacher-arabic">قاري مجيب</p>
+            <p class="teacher-cred">Senior Qirāʾat Teacher · Muḥaddith</p>
+            <span class="view-bio-link">View Biography <i class="fas fa-arrow-right"></i></span>
           </div>
-          <div class="faculty-info">
-            <h3>Maulana Zakariyya Hassan</h3>
-            <div class="faculty-title">Islamic History & Seerah</div>
-            <div class="faculty-dept">Boys Alim Course</div>
-            <p>Maulana Zakariyya brings Islamic history and the Seerah of the Prophet ﷺ to life in the classroom. He teaches with passion and aims to connect students deeply with their heritage.</p>
-          </div>
-        </div>
+        </a>
 
       </div>
     </div>
   </section>
 
-  <!-- GIRLS FACULTY -->
+  <!-- SCHOLARS OF ISLAMIC SCIENCES -->
   <section class="section-pad">
     <div class="container">
-      <div style="display: flex; align-items: center; gap: 1.5rem; margin-bottom: 3rem;">
-        <div style="flex: 1; height: 2px; background: linear-gradient(to right, transparent, var(--border));"></div>
-        <div style="text-align: center; white-space: nowrap;">
-          <span style="display: inline-flex; align-items: center; gap: 0.6rem; background: var(--gold); color: var(--navy); font-size: 0.8rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; padding: 0.5rem 1.25rem; border-radius: 50px;">
-            <i class="fas fa-user"></i> Girls Department Faculty
-          </span>
-        </div>
-        <div style="flex: 1; height: 2px; background: linear-gradient(to left, transparent, var(--border));"></div>
+      <div class="category-header">
+        <span class="category-label cat-blue"><i class="fas fa-graduation-cap"></i> Scholars of Islamic Sciences</span>
       </div>
+      <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:1.5rem;">
 
-      <div class="faculty-grid">
+        <a href="faculty/mawlana-osama.html" class="teacher-card">
+          <div class="teacher-photo"><div class="teacher-avatar">O</div></div>
+          <div class="teacher-info">
+            <h3>Mawlana Osama</h3>
+            <p class="teacher-arabic">مولانا أسامة</p>
+            <p class="teacher-cred">Scholar of Islamic Sciences</p>
+            <span class="view-bio-link">View Biography <i class="fas fa-arrow-right"></i></span>
+          </div>
+        </a>
 
-        <div class="faculty-card">
-          <div class="faculty-photo" style="background: linear-gradient(135deg, #2C3E7C, #4A6FA5);">
-            <div class="faculty-avatar">K</div>
+        <a href="faculty/mawlana-abdullah-kamal.html" class="teacher-card">
+          <div class="teacher-photo"><div class="teacher-avatar">A</div></div>
+          <div class="teacher-info">
+            <h3>Mawlana Abdullah Kamal</h3>
+            <p class="teacher-arabic">مولانا عبد الله كمال</p>
+            <p class="teacher-cred">Scholar of Islamic Sciences</p>
+            <span class="view-bio-link">View Biography <i class="fas fa-arrow-right"></i></span>
           </div>
-          <div class="faculty-info">
-            <h3>Ustadha Khadijah Malik</h3>
-            <div class="faculty-title">Head of Girls Department</div>
-            <div class="faculty-dept">Girls Administration</div>
-            <p>Ustadha Khadijah is an Alima and Hafiza who completed her studies at a leading Darul Uloom in the UK. With over a decade of teaching experience, she leads the girls department with wisdom and compassion.</p>
-          </div>
-        </div>
+        </a>
 
-        <div class="faculty-card">
-          <div class="faculty-photo" style="background: linear-gradient(135deg, #2C3E7C, #4A6FA5);">
-            <div class="faculty-avatar">F</div>
+        <a href="faculty/mawlana-hamoon-rashid.html" class="teacher-card">
+          <div class="teacher-photo"><div class="teacher-avatar">H</div></div>
+          <div class="teacher-info">
+            <h3>Mawlana Hamoon Rashid</h3>
+            <p class="teacher-arabic">مولانا هامون رشيد</p>
+            <p class="teacher-cred">Scholar of Islamic Sciences</p>
+            <span class="view-bio-link">View Biography <i class="fas fa-arrow-right"></i></span>
           </div>
-          <div class="faculty-info">
-            <h3>Hafiza Fatima Siddiqui</h3>
-            <div class="faculty-title">Head of Girls Hifz</div>
-            <div class="faculty-dept">Girls Hifz</div>
-            <p>Hafiza Fatima memorized the Quran at age 14 and holds an Ijazah. She has dedicated her career to helping girls complete their Hifz, combining firm discipline with genuine warmth and encouragement.</p>
-          </div>
-        </div>
+        </a>
 
-        <div class="faculty-card">
-          <div class="faculty-photo" style="background: linear-gradient(135deg, #2C3E7C, #4A6FA5);">
-            <div class="faculty-avatar">A</div>
+        <a href="faculty/mawlana-yusuf-chowdhury.html" class="teacher-card">
+          <div class="teacher-photo"><div class="teacher-avatar">Y</div></div>
+          <div class="teacher-info">
+            <h3>Mawlana Yusuf Chowdhury</h3>
+            <p class="teacher-arabic">مولانا يوسف چودهري</p>
+            <p class="teacher-cred">Scholar of Islamic Sciences</p>
+            <span class="view-bio-link">View Biography <i class="fas fa-arrow-right"></i></span>
           </div>
-          <div class="faculty-info">
-            <h3>Ustadha Aisha Nawaz</h3>
-            <div class="faculty-title">Alim Course — Fiqh & Hadith</div>
-            <div class="faculty-dept">Girls Alim Course</div>
-            <p>Ustadha Aisha is a graduate of Darul Uloom Leicester and has pursued post-graduate studies in Hadith sciences. She teaches Fiqh, Hadith, and Islamic jurisprudence to the senior girls.</p>
-          </div>
-        </div>
+        </a>
 
-        <div class="faculty-card">
-          <div class="faculty-photo" style="background: linear-gradient(135deg, #2C3E7C, #4A6FA5);">
-            <div class="faculty-avatar">M</div>
+        <a href="faculty/mawlana-tareque.html" class="teacher-card">
+          <div class="teacher-photo"><div class="teacher-avatar">T</div></div>
+          <div class="teacher-info">
+            <h3>Mawlana Tareque</h3>
+            <p class="teacher-arabic">مولانا طارق</p>
+            <p class="teacher-cred">Scholar of Islamic Sciences</p>
+            <span class="view-bio-link">View Biography <i class="fas fa-arrow-right"></i></span>
           </div>
-          <div class="faculty-info">
-            <h3>Ustadha Maryam Osman</h3>
-            <div class="faculty-title">Tafsir & Aqeedah</div>
-            <div class="faculty-dept">Girls Alim Course</div>
-            <p>Ustadha Maryam brings a deep love for the Quran to her teaching. She specializes in Tafsir and Islamic theology, helping students understand and internalize the meanings of the Quran in their lives.</p>
-          </div>
-        </div>
+        </a>
 
-        <div class="faculty-card">
-          <div class="faculty-photo" style="background: linear-gradient(135deg, #2C3E7C, #4A6FA5);">
-            <div class="faculty-avatar">R</div>
+        <a href="faculty/mawlana-fathi.html" class="teacher-card">
+          <div class="teacher-photo"><div class="teacher-avatar">F</div></div>
+          <div class="teacher-info">
+            <h3>Mawlana Fathi</h3>
+            <p class="teacher-arabic">مولانا فتحي</p>
+            <p class="teacher-cred">Scholar of Islamic Sciences</p>
+            <span class="view-bio-link">View Biography <i class="fas fa-arrow-right"></i></span>
           </div>
-          <div class="faculty-info">
-            <h3>Ustadha Ruqayyah Baig</h3>
-            <div class="faculty-title">Arabic Language</div>
-            <div class="faculty-dept">Girls Alim Course</div>
-            <p>Ustadha Ruqayyah studied Arabic language and literature in Jordan and brings a native-level fluency to her teaching. She focuses on making Arabic grammar accessible and engaging for students.</p>
-          </div>
-        </div>
+        </a>
 
-        <div class="faculty-card">
-          <div class="faculty-photo" style="background: linear-gradient(135deg, #2C3E7C, #4A6FA5);">
-            <div class="faculty-avatar">Z</div>
+        <a href="faculty/mawlana-zafar.html" class="teacher-card">
+          <div class="teacher-photo"><div class="teacher-avatar">Z</div></div>
+          <div class="teacher-info">
+            <h3>Mawlana Zafar</h3>
+            <p class="teacher-arabic">مولانا ظفر</p>
+            <p class="teacher-cred">Scholar of Islamic Sciences</p>
+            <span class="view-bio-link">View Biography <i class="fas fa-arrow-right"></i></span>
           </div>
-          <div class="faculty-info">
-            <h3>Ustadha Zainab Rahman</h3>
-            <div class="faculty-title">Nazira & Maktab Instructor</div>
-            <div class="faculty-dept">Girls Nazira & Maktab</div>
-            <p>Ustadha Zainab is known for her patient and encouraging teaching style. She specializes in teaching Quran to beginners and younger students, instilling a love for the Quran from an early age.</p>
+        </a>
+
+        <a href="faculty/mawlana-azfar.html" class="teacher-card">
+          <div class="teacher-photo"><div class="teacher-avatar">A</div></div>
+          <div class="teacher-info">
+            <h3>Mawlana Azfar</h3>
+            <p class="teacher-arabic">مولانا أزفر</p>
+            <p class="teacher-cred">Scholar of Islamic Sciences</p>
+            <span class="view-bio-link">View Biography <i class="fas fa-arrow-right"></i></span>
           </div>
-        </div>
+        </a>
+
+        <a href="faculty/mawlana-adnan-lunat.html" class="teacher-card">
+          <div class="teacher-photo"><div class="teacher-avatar">A</div></div>
+          <div class="teacher-info">
+            <h3>Mawlana Adnan Lunat</h3>
+            <p class="teacher-arabic">مولانا عدنان لونات</p>
+            <p class="teacher-cred">Scholar of Islamic Sciences</p>
+            <span class="view-bio-link">View Biography <i class="fas fa-arrow-right"></i></span>
+          </div>
+        </a>
+
+        <a href="faculty/mawlana-farzan.html" class="teacher-card">
+          <div class="teacher-photo"><div class="teacher-avatar">F</div></div>
+          <div class="teacher-info">
+            <h3>Mawlana Farzan</h3>
+            <p class="teacher-arabic">مولانا فرزان</p>
+            <p class="teacher-cred">Scholar of Islamic Sciences</p>
+            <span class="view-bio-link">View Biography <i class="fas fa-arrow-right"></i></span>
+          </div>
+        </a>
 
       </div>
     </div>
@@ -294,12 +428,11 @@
 
   <!-- JOIN THE TEAM -->
   <section class="section-pad pattern-bg">
-    <div class="container" style="text-align: center; position: relative; z-index: 1;">
-      <h2 style="color: white; margin-bottom: 0.5rem;">Join Our Faculty</h2>
+    <div class="container" style="text-align:center;position:relative;z-index:1;">
+      <h2 style="color:white;margin-bottom:0.5rem;">Join Our Faculty</h2>
       <span class="gold-line"></span>
-      <p style="color: rgba(255,255,255,0.75); max-width: 540px; margin: 0 auto 2rem;">
-        Are you a qualified scholar with a passion for teaching? We are always looking for
-        dedicated educators to join our growing team. Contact us to learn more about open positions.
+      <p style="color:rgba(255,255,255,0.75);max-width:540px;margin:0 auto 2rem;">
+        Are you a qualified scholar with a passion for teaching? Contact us to learn more about open positions.
       </p>
       <a href="contact.html" class="btn btn-gold btn-lg">
         <i class="fas fa-envelope"></i> Get in Touch
