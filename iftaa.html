@@ -174,13 +174,20 @@
       border-radius: 50px;
       margin-bottom: 0.85rem;
     }
-    .cat-salah       { background: rgba(26,75,140,0.1); color: #1A4B8C; }
-    .cat-zakaat      { background: rgba(201,162,39,0.15); color: #9E7D18; }
-    .cat-sawm        { background: rgba(46,134,193,0.12); color: #1A6090; }
-    .cat-business    { background: rgba(39,174,96,0.12); color: #1E8449; }
-    .cat-food        { background: rgba(231,76,60,0.1); color: #B03A2E; }
-    .cat-marriage    { background: rgba(155,89,182,0.12); color: #7D3C98; }
-    .cat-general     { background: rgba(12,31,61,0.08); color: var(--navy); }
+    .cat-salah        { background: rgba(26,75,140,0.1);   color: #1A4B8C; }
+    .cat-zakaat       { background: rgba(201,162,39,0.15); color: #9E7D18; }
+    .cat-sawm         { background: rgba(46,134,193,0.12); color: #1A6090; }
+    .cat-business     { background: rgba(39,174,96,0.12);  color: #1E8449; }
+    .cat-food         { background: rgba(231,76,60,0.1);   color: #B03A2E; }
+    .cat-marriage     { background: rgba(155,89,182,0.12); color: #7D3C98; }
+    .cat-divorce      { background: rgba(192,57,43,0.1);   color: #922B21; }
+    .cat-purification { background: rgba(21,101,192,0.1);  color: #1565C0; }
+    .cat-funerals     { background: rgba(69,69,69,0.1);    color: #424242; }
+    .cat-hajj         { background: rgba(0,121,107,0.1);   color: #00695C; }
+    .cat-inheritance  { background: rgba(74,20,140,0.1);   color: #4A148C; }
+    .cat-endowments   { background: rgba(230,81,0,0.1);    color: #E65100; }
+    .cat-oaths        { background: rgba(1,87,155,0.1);    color: #01579B; }
+    .cat-general      { background: rgba(12,31,61,0.08);   color: var(--navy); }
     .fatwa-card h3 {
       font-size: 1rem;
       margin-bottom: 0.4rem;
@@ -373,9 +380,16 @@
         <button class="cat-filter-btn" data-cat="Salah"><i class="fas fa-pray"></i> Salah</button>
         <button class="cat-filter-btn" data-cat="Zakaat"><i class="fas fa-hand-holding-heart"></i> Zakāt</button>
         <button class="cat-filter-btn" data-cat="Sawm"><i class="fas fa-moon"></i> Sawm</button>
+        <button class="cat-filter-btn" data-cat="Purification"><i class="fas fa-droplet"></i> Purification</button>
+        <button class="cat-filter-btn" data-cat="Hajj & Umrah"><i class="fas fa-kaaba"></i> Hajj &amp; Umrah</button>
+        <button class="cat-filter-btn" data-cat="Marriage & Family"><i class="fas fa-heart"></i> Marriage</button>
+        <button class="cat-filter-btn" data-cat="Divorce"><i class="fas fa-heart-crack"></i> Divorce</button>
         <button class="cat-filter-btn" data-cat="Business & Finance"><i class="fas fa-coins"></i> Business</button>
         <button class="cat-filter-btn" data-cat="Food & Drink"><i class="fas fa-utensils"></i> Food &amp; Drink</button>
-        <button class="cat-filter-btn" data-cat="Marriage & Family"><i class="fas fa-heart"></i> Marriage</button>
+        <button class="cat-filter-btn" data-cat="Funerals"><i class="fas fa-circle"></i> Funerals</button>
+        <button class="cat-filter-btn" data-cat="Inheritance"><i class="fas fa-scroll"></i> Inheritance</button>
+        <button class="cat-filter-btn" data-cat="Endowments"><i class="fas fa-hand-holding"></i> Endowments</button>
+        <button class="cat-filter-btn" data-cat="Oaths & Vows"><i class="fas fa-hands-praying"></i> Oaths &amp; Vows</button>
         <button class="cat-filter-btn" data-cat="General"><i class="fas fa-circle-info"></i> General</button>
       </div>
     </div>
@@ -492,13 +506,20 @@
 
   // ── Category → CSS class map ──────────────────────────────────────────────
   const catClass = {
-    'Salah':            'cat-salah',
-    'Zakaat':           'cat-zakaat',
-    'Sawm':             'cat-sawm',
+    'Salah':              'cat-salah',
+    'Zakaat':             'cat-zakaat',
+    'Sawm':               'cat-sawm',
     'Business & Finance': 'cat-business',
-    'Food & Drink':     'cat-food',
-    'Marriage & Family':'cat-marriage',
-    'General':          'cat-general'
+    'Food & Drink':       'cat-food',
+    'Marriage & Family':  'cat-marriage',
+    'Divorce':            'cat-divorce',
+    'Purification':       'cat-purification',
+    'Funerals':           'cat-funerals',
+    'Hajj & Umrah':       'cat-hajj',
+    'Inheritance':        'cat-inheritance',
+    'Endowments':         'cat-endowments',
+    'Oaths & Vows':       'cat-oaths',
+    'General':            'cat-general'
   };
 
   // ── Strip HTML tags from a string ─────────────────────────────────────────
@@ -534,7 +555,6 @@
         </div>
         <div class="fatwa-card-footer">
           <div class="fatwa-meta-row">
-            <span><i class="fas fa-user-tie"></i> ${f.mufti}</span>
             <span><i class="fas fa-calendar"></i> ${formatDate(f.date)}</span>
           </div>
           <div class="fatwa-keywords">${kwHtml}</div>
