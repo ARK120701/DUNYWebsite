@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Dashboard — Darul Uloom New York</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Poppins:wght@300;400;500;600;700&family=Amiri:wght@400;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy:   #0C1F3D;
+      --blue:   #1e3a8a;
+      --gold:   #C9A227;
+      --border: #e8ecf0;
+      --bg:     #f4f6f9;
+      --white:  #ffffff;
+      --text:   #333;
+      --muted:  #888;
+      --radius: 12px;
+      --shadow: 0 2px 16px rgba(0,0,0,0.07);
+    }
+
+    body { font-family: 'Poppins', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+
+    /* ── Topbar ── */
+    .topbar {
+      background: var(--navy);
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 1.75rem;
+      position: sticky;
+      top: 0;
+      z-index: 200;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.25);
+    }
+    .topbar-brand {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      color: #fff;
+      font-family: 'Playfair Display', serif;
+      font-size: 1rem;
+      font-weight: 600;
+    }
+    .topbar-brand i { color: var(--gold); font-size: 1.1rem; }
+    .topbar-right { display: flex; align-items: center; gap: 1rem; }
+    .topbar-right a {
+      color: rgba(255,255,255,0.6);
+      text-decoration: none;
+      font-size: 0.82rem;
+      transition: color 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+    .topbar-right a:hover { color: var(--gold); }
+    .logout-btn {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.2);
+      color: rgba(255,255,255,0.8) !important;
+      padding: 0.35rem 0.9rem;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.8rem;
+      font-family: 'Poppins', sans-serif;
+      transition: background 0.2s;
+    }
+    .logout-btn:hover { background: rgba(255,255,255,0.15) !important; color: #fff !important; }
+
+    /* ── Layout ── */
+    .main-wrap {
+      max-width: 820px;
+      margin: 0 auto;
+      padding: 2.5rem 1.5rem 5rem;
+    }
+
+    /* ── Section header ── */
+    .section-header {
+      margin-bottom: 2rem;
+    }
+    .section-header h1 {
+      font-family: 'Playfair Display', serif;
+      color: var(--navy);
+      font-size: 1.75rem;
+      margin-bottom: 0.25rem;
+    }
+    .section-header p { color: var(--muted); font-size: 0.88rem; }
+
+    /* ── Cards ── */
+    .card {
+      background: var(--white);
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      margin-bottom: 1.5rem;
+    }
+    .card-header {
+      padding: 1.25rem 1.75rem;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+    .card-header h2 {
+      font-family: 'Playfair Display', serif;
+      color: var(--navy);
+      font-size: 1.05rem;
+      font-weight: 600;
+    }
+    .card-header i { color: var(--gold); font-size: 0.95rem; }
+    .card-body { padding: 1.75rem; }
+
+    /* ── Form elements ── */
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.1rem;
+      margin-bottom: 1.1rem;
+    }
+    .form-row.full { grid-template-columns: 1fr; }
+    .form-row.three { grid-template-columns: 1fr 1fr 1fr; }
+
+    .field { display: flex; flex-direction: column; gap: 0.4rem; }
+    .field label {
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: #555;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+    }
+    .field label .req { color: #e53e3e; margin-left: 2px; }
+    .field input,
+    .field select,
+    .field textarea {
+      padding: 0.7rem 0.9rem;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-family: 'Poppins', sans-serif;
+      color: var(--text);
+      background: #fafbfc;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .field input:focus,
+    .field select:focus,
+    .field textarea:focus {
+      border-color: var(--gold);
+      box-shadow: 0 0 0 3px rgba(201,162,39,0.1);
+      background: var(--white);
+    }
+    .field textarea { resize: vertical; min-height: 120px; line-height: 1.65; }
+    .field textarea.tall { min-height: 280px; }
+    .field .hint { font-size: 0.75rem; color: var(--muted); }
+
+    /* ── Divider ── */
+    .divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 1.5rem 0;
+    }
+
+    /* ── Submit ── */
+    .action-row {
+      display: flex;
+      gap: 0.75rem;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .btn-submit {
+      background: var(--navy);
+      color: #fff;
+      border: none;
+      padding: 0.8rem 2rem;
+      border-radius: 8px;
+      font-size: 0.92rem;
+      font-weight: 600;
+      font-family: 'Poppins', sans-serif;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: background 0.2s;
+    }
+    .btn-submit:hover { background: var(--blue); }
+    .btn-submit .spinner {
+      display: none;
+      width: 15px; height: 15px;
+      border: 2px solid rgba(255,255,255,0.3);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+    }
+    .btn-submit.loading .spinner { display: block; }
+    .btn-submit.loading .btn-label { display: none; }
+    .btn-clear {
+      background: transparent;
+      color: var(--muted);
+      border: 1.5px solid var(--border);
+      padding: 0.8rem 1.4rem;
+      border-radius: 8px;
+      font-size: 0.88rem;
+      font-family: 'Poppins', sans-serif;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-clear:hover { border-color: #bbb; color: #555; }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── Success banner ── */
+    .success-banner {
+      display: none;
+      background: #f0fdf4;
+      border: 1px solid #86efac;
+      border-radius: var(--radius);
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 1.5rem;
+      align-items: flex-start;
+      gap: 1rem;
+    }
+    .success-banner.visible { display: flex; }
+    .success-banner .suc-icon { font-size: 1.5rem; color: #16a34a; flex-shrink: 0; }
+    .success-banner h3 { font-size: 0.95rem; color: #15803d; margin-bottom: 0.2rem; }
+    .success-banner p { font-size: 0.82rem; color: #166534; }
+    .success-banner .suc-actions { margin-top: 0.75rem; display: flex; gap: 0.6rem; flex-wrap: wrap; }
+    .suc-btn {
+      padding: 0.4rem 1rem;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      font-family: 'Poppins', sans-serif;
+      cursor: pointer;
+      text-decoration: none;
+      border: none;
+      transition: all 0.2s;
+    }
+    .suc-btn-primary { background: var(--navy); color: #fff; }
+    .suc-btn-primary:hover { background: var(--blue); }
+    .suc-btn-outline { background: transparent; border: 1.5px solid var(--navy); color: var(--navy); }
+    .suc-btn-outline:hover { background: var(--navy); color: #fff; }
+
+    /* ── Fatwa list ── */
+    .fatwa-list { list-style: none; }
+    .fatwa-list-item {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 0.9rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .fatwa-list-item:last-child { border-bottom: none; }
+    .fli-cat {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--gold);
+      flex-shrink: 0;
+    }
+    .fli-title {
+      flex: 1;
+      font-size: 0.88rem;
+      color: var(--navy);
+      font-weight: 500;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .fli-cat-badge {
+      font-size: 0.72rem;
+      padding: 0.15rem 0.55rem;
+      border-radius: 20px;
+      background: rgba(12,31,61,0.07);
+      color: var(--navy);
+      white-space: nowrap;
+    }
+    .fli-date { font-size: 0.75rem; color: var(--muted); white-space: nowrap; }
+    .fli-actions { display: flex; gap: 0.35rem; }
+    .fli-btn {
+      padding: 0.25rem 0.6rem;
+      border-radius: 5px;
+      font-size: 0.72rem;
+      font-family: 'Poppins', sans-serif;
+      cursor: pointer;
+      border: none;
+      font-weight: 500;
+      text-decoration: none;
+    }
+    .fli-btn-view { background: var(--navy); color: #fff; }
+    .fli-btn-del  { background: #fee2e2; color: #dc2626; }
+    .fli-btn-del:hover { background: #dc2626; color: #fff; }
+    .empty-list {
+      text-align: center;
+      padding: 2.5rem 1rem;
+      color: var(--muted);
+      font-size: 0.88rem;
+    }
+    .empty-list i { font-size: 1.75rem; display: block; margin-bottom: 0.6rem; color: #ddd; }
+
+    @media (max-width: 600px) {
+      .form-row, .form-row.three { grid-template-columns: 1fr; }
+      .main-wrap { padding: 1.5rem 1rem 4rem; }
+      .fli-date, .fli-cat-badge { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Topbar -->
+  <div class="topbar">
+    <div class="topbar-brand">
+      <i class="fas fa-mosque"></i>
+      Darul Iftāʾ Admin
+    </div>
+    <div class="topbar-right">
+      <a href="../iftaa.html" target="_blank"><i class="fas fa-external-link-alt"></i> View Iftaa Page</a>
+      <button class="logout-btn" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</button>
+    </div>
+  </div>
+
+  <div class="main-wrap">
+    <div class="section-header">
+      <h1>Upload Fatwa</h1>
+      <p>Fill in the details below and click Upload. The fatwa will appear on the Iftaa page immediately.</p>
+    </div>
+
+    <!-- Success banner -->
+    <div class="success-banner" id="success-banner">
+      <div class="suc-icon"><i class="fas fa-check-circle"></i></div>
+      <div>
+        <h3>Fatwa uploaded successfully!</h3>
+        <p>It is now visible on the Iftaa page. To make it permanent across all devices, copy the JSON below and add it to <code>data/fatwas.json</code>.</p>
+        <div class="suc-actions">
+          <a href="../iftaa.html" target="_blank" class="suc-btn suc-btn-primary"><i class="fas fa-eye"></i> View on Iftaa Page</a>
+          <button class="suc-btn suc-btn-outline" onclick="copyJson()"><i class="fas fa-copy"></i> Copy JSON</button>
+          <button class="suc-btn suc-btn-outline" onclick="resetForm()"><i class="fas fa-plus"></i> Upload Another</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Upload Form -->
+    <form id="upload-form" novalidate>
+
+      <!-- Fatwa Info -->
+      <div class="card">
+        <div class="card-header">
+          <i class="fas fa-file-pen"></i>
+          <h2>Fatwa Details</h2>
+        </div>
+        <div class="card-body">
+          <div class="form-row full">
+            <div class="field">
+              <label>Title <span class="req">*</span></label>
+              <input type="text" id="f-title" placeholder="e.g. Ruling on Cryptocurrency Trading" required />
+            </div>
+          </div>
+          <div class="form-row full">
+            <div class="field">
+              <label>Arabic Title</label>
+              <input type="text" id="f-arabic" placeholder="e.g. حكم تداول العملات الرقمية" dir="auto" />
+            </div>
+          </div>
+          <div class="form-row three">
+            <div class="field">
+              <label>Category <span class="req">*</span></label>
+              <select id="f-category" required>
+                <option value="">— Select —</option>
+                <option value="Salah">Salah</option>
+                <option value="Zakaat">Zakaat</option>
+                <option value="Sawm">Sawm (Fasting)</option>
+                <option value="Purification">Purification</option>
+                <option value="Hajj & Umrah">Hajj &amp; Umrah</option>
+                <option value="Marriage & Family">Marriage &amp; Family</option>
+                <option value="Divorce">Divorce</option>
+                <option value="Business & Finance">Business &amp; Finance</option>
+                <option value="Food & Drink">Food &amp; Drink</option>
+                <option value="Funerals">Funerals</option>
+                <option value="Inheritance">Inheritance</option>
+                <option value="Endowments">Endowments</option>
+                <option value="Oaths & Vows">Oaths &amp; Vows</option>
+                <option value="General">General</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>Date <span class="req">*</span></label>
+              <input type="date" id="f-date" required />
+            </div>
+            <div class="field">
+              <label>Madhab</label>
+              <select id="f-madhab">
+                <option value="Hanafi">Hanafi</option>
+                <option value="Shafi'i">Shafi'i</option>
+                <option value="Maliki">Maliki</option>
+                <option value="Hanbali">Hanbali</option>
+                <option value="General">General</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Written By -->
+      <div class="card">
+        <div class="card-header">
+          <i class="fas fa-user-pen"></i>
+          <h2>Written By</h2>
+        </div>
+        <div class="card-body">
+          <div class="form-row full">
+            <div class="field">
+              <label>Student Name <span class="req">*</span></label>
+              <input type="text" id="f-student" placeholder="e.g. Abdurrahman Khan" required />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Question -->
+      <div class="card">
+        <div class="card-header">
+          <i class="fas fa-question-circle"></i>
+          <h2>Question</h2>
+        </div>
+        <div class="card-body">
+          <div class="field">
+            <textarea id="f-question" placeholder="Write the question as submitted by the inquirer…" required></textarea>
+          </div>
+        </div>
+      </div>
+
+      <!-- Answer -->
+      <div class="card">
+        <div class="card-header">
+          <i class="fas fa-scroll"></i>
+          <h2>Answer (Fatwa)</h2>
+        </div>
+        <div class="card-body">
+          <div class="field">
+            <textarea id="f-answer" class="tall" placeholder="Write the full fatwa answer here…" required></textarea>
+            <div class="hint">You may use HTML tags like &lt;p&gt;, &lt;strong&gt;, &lt;ul&gt;, &lt;li&gt; for formatting.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Keywords -->
+      <div class="card">
+        <div class="card-header">
+          <i class="fas fa-tags"></i>
+          <h2>Keywords</h2>
+        </div>
+        <div class="card-body">
+          <div class="field">
+            <label>Keywords <span style="font-weight:400;text-transform:none;letter-spacing:0;">(optional)</span></label>
+            <div class="tag-wrap" id="tag-wrap" onclick="document.getElementById('kw-input').focus()">
+              <input type="text" id="kw-input" placeholder="Type a keyword and press Enter or comma…" />
+            </div>
+            <div class="hint">Press Enter or comma to add each keyword. These appear as filter pills on the Iftaa page.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Actions -->
+      <div class="action-row">
+        <button type="submit" class="btn-submit" id="upload-btn">
+          <div class="spinner"></div>
+          <span class="btn-label"><i class="fas fa-upload"></i> Upload Fatwa</span>
+        </button>
+        <button type="button" class="btn-clear" onclick="resetForm()">
+          <i class="fas fa-undo"></i> Clear
+        </button>
+      </div>
+
+    </form>
+
+    <!-- Saved Fatwas List -->
+    <div class="card" style="margin-top: 3rem;">
+      <div class="card-header">
+        <i class="fas fa-list"></i>
+        <h2>Uploaded Fatwas <span id="count-badge" style="font-family:Poppins;font-weight:400;font-size:0.8rem;color:var(--muted);margin-left:0.4rem;"></span></h2>
+      </div>
+      <div class="card-body" style="padding: 0.5rem 1.75rem 1.25rem;">
+        <ul class="fatwa-list" id="fatwa-list">
+          <li class="empty-list"><i class="fas fa-inbox"></i>No fatwas uploaded yet.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    /* Tag input */
+    .tag-wrap {
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      padding: 0.45rem 0.75rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      align-items: center;
+      min-height: 44px;
+      cursor: text;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      background: #fafbfc;
+    }
+    .tag-wrap:focus-within {
+      border-color: var(--gold);
+      box-shadow: 0 0 0 3px rgba(201,162,39,0.1);
+      background: var(--white);
+    }
+    .tag-pill {
+      background: var(--navy);
+      color: rgba(255,255,255,0.85);
+      padding: 0.2rem 0.6rem;
+      border-radius: 20px;
+      font-size: 0.76rem;
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+    .tag-pill button {
+      background: none;
+      border: none;
+      color: rgba(255,255,255,0.6);
+      cursor: pointer;
+      font-size: 0.8rem;
+      line-height: 1;
+      padding: 0;
+    }
+    .tag-pill button:hover { color: #fff; }
+    .tag-wrap input {
+      border: none;
+      outline: none;
+      font-size: 0.88rem;
+      font-family: 'Poppins', sans-serif;
+      flex: 1;
+      min-width: 140px;
+      padding: 0.1rem 0;
+      background: transparent;
+    }
+  </style>
+
+  <script>
+    // ── Auth guard ────────────────────────────────────────────────
+    if (sessionStorage.getItem('duny_admin') !== '1') {
+      window.location.href = 'index.html';
+    }
+
+    function logout() {
+      sessionStorage.removeItem('duny_admin');
+      window.location.href = 'index.html';
+    }
+
+    // ── Set today's date ──────────────────────────────────────────
+    document.getElementById('f-date').value = new Date().toISOString().split('T')[0];
+
+    // ── Keywords tag input ────────────────────────────────────────
+    let keywords = [];
+
+    function addKeyword(val) {
+      val = val.trim().replace(/,$/, '').trim();
+      if (!val || keywords.includes(val)) return;
+      keywords.push(val);
+      renderKeywords();
+    }
+    function removeKeyword(i) {
+      keywords.splice(i, 1);
+      renderKeywords();
+    }
+    function renderKeywords() {
+      const wrap = document.getElementById('tag-wrap');
+      const input = document.getElementById('kw-input');
+      wrap.querySelectorAll('.tag-pill').forEach(p => p.remove());
+      keywords.forEach((kw, i) => {
+        const pill = document.createElement('div');
+        pill.className = 'tag-pill';
+        pill.innerHTML = `${kw}<button type="button" onclick="removeKeyword(${i})">×</button>`;
+        wrap.insertBefore(pill, input);
+      });
+    }
+
+    document.getElementById('kw-input').addEventListener('keydown', function(e) {
+      if (e.key === 'Enter' || e.key === ',') {
+        e.preventDefault();
+        addKeyword(this.value);
+        this.value = '';
+      } else if (e.key === 'Backspace' && !this.value && keywords.length) {
+        removeKeyword(keywords.length - 1);
+      }
+    });
+    document.getElementById('kw-input').addEventListener('blur', function() {
+      if (this.value.trim()) { addKeyword(this.value); this.value = ''; }
+    });
+
+    // ── LocalStorage helpers ──────────────────────────────────────
+    function getLocal() {
+      try { return JSON.parse(localStorage.getItem('duny_fatwas') || '[]'); }
+      catch { return []; }
+    }
+    function saveLocal(arr) { localStorage.setItem('duny_fatwas', JSON.stringify(arr)); }
+
+    // ── Auto slug ─────────────────────────────────────────────────
+    function toSlug(str) {
+      return str.toLowerCase().replace(/[^\w\s-]/g,'').replace(/\s+/g,'-').replace(/-+/g,'-').replace(/^-|-$/g,'');
+    }
+
+    // ── Submit ────────────────────────────────────────────────────
+    let lastJson = '';
+
+    document.getElementById('upload-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const title    = document.getElementById('f-title').value.trim();
+      const arabic   = document.getElementById('f-arabic').value.trim();
+      const category = document.getElementById('f-category').value;
+      const date     = document.getElementById('f-date').value;
+      const madhab   = document.getElementById('f-madhab').value;
+      const student  = document.getElementById('f-student').value.trim();
+      const question = document.getElementById('f-question').value.trim();
+      const answer   = document.getElementById('f-answer').value.trim();
+
+      if (!title || !category || !date || !student || !question || !answer) {
+        alert('Please fill in all required fields.');
+        return;
+      }
+
+      const btn = document.getElementById('upload-btn');
+      btn.classList.add('loading');
+
+      setTimeout(() => {
+        btn.classList.remove('loading');
+
+        const existing = getLocal();
+        const newId = existing.length
+          ? Math.max(...existing.map(f => parseInt(f.id) || 0)) + 1
+          : 100;
+        const slug = toSlug(title) || `fatwa-${newId}`;
+
+        const fatwa = {
+          id: newId,
+          slug,
+          title,
+          arabic_title: arabic,
+          question,
+          answer,
+          mufti: 'Darul Uloom New York',
+          written_by: student,
+          date,
+          category,
+          keywords: [...keywords],
+          references: [],
+          madhab
+        };
+
+        const updated = [fatwa, ...existing];
+        saveLocal(updated);
+        lastJson = JSON.stringify(fatwa, null, 2);
+
+        document.getElementById('success-banner').classList.add('visible');
+        document.getElementById('success-banner').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        renderList();
+      }, 700);
+    });
+
+    function copyJson() {
+      navigator.clipboard.writeText(lastJson).then(() => {
+        const btn = document.querySelector('.suc-btn-outline');
+        const orig = btn.innerHTML;
+        btn.innerHTML = '<i class="fas fa-check"></i> Copied!';
+        setTimeout(() => { btn.innerHTML = orig; }, 2000);
+      });
+    }
+
+    function resetForm() {
+      document.getElementById('success-banner').classList.remove('visible');
+      document.getElementById('upload-form').reset();
+      document.getElementById('f-date').value = new Date().toISOString().split('T')[0];
+      keywords = [];
+      renderKeywords();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // ── Render uploaded list ──────────────────────────────────────
+    function renderList() {
+      const fatwas = getLocal();
+      const list = document.getElementById('fatwa-list');
+      const badge = document.getElementById('count-badge');
+      badge.textContent = fatwas.length ? `(${fatwas.length})` : '';
+
+      if (!fatwas.length) {
+        list.innerHTML = '<li class="empty-list"><i class="fas fa-inbox"></i>No fatwas uploaded yet.</li>';
+        return;
+      }
+
+      list.innerHTML = fatwas.map((f, i) => `
+        <li class="fatwa-list-item">
+          <div class="fli-cat"></div>
+          <div class="fli-title">${esc(f.title)}</div>
+          <div class="fli-cat-badge">${esc(f.category)}</div>
+          <div class="fli-date">${f.date}</div>
+          <div class="fli-actions">
+            <a href="../fatwa.html?slug=${encodeURIComponent(f.slug)}" target="_blank" class="fli-btn fli-btn-view">View</a>
+            <button class="fli-btn fli-btn-del" onclick="deleteFatwa(${i})">Delete</button>
+          </div>
+        </li>
+      `).join('');
+    }
+
+    function deleteFatwa(i) {
+      if (!confirm('Delete this fatwa?')) return;
+      const arr = getLocal();
+      arr.splice(i, 1);
+      saveLocal(arr);
+      renderList();
+    }
+
+    function esc(s) {
+      return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    }
+
+    renderList();
+  </script>
+</body>
+</html>
