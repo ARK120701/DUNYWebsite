@@ -1,0 +1,1064 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Add Fatwa — Admin — Darul Uloom New York</title>
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400&family=Poppins:wght@300;400;500;600;700&family=Amiri:wght@400;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    :root {
+      --admin-border: #dde3ec;
+      --admin-bg: #f7f9fc;
+    }
+
+    .admin-wrapper {
+      min-height: 100vh;
+      background: var(--admin-bg);
+    }
+
+    /* ── Lock screen ── */
+    #lock-screen {
+      position: fixed;
+      inset: 0;
+      background: linear-gradient(135deg, var(--navy) 0%, var(--blue) 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+    }
+    .lock-card {
+      background: #fff;
+      border-radius: var(--radius);
+      padding: 2.5rem 2rem;
+      width: 100%;
+      max-width: 380px;
+      text-align: center;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+    }
+    .lock-card .lock-icon {
+      font-size: 2.5rem;
+      color: var(--gold);
+      margin-bottom: 1rem;
+    }
+    .lock-card h2 {
+      font-family: 'Playfair Display', serif;
+      color: var(--navy);
+      margin-bottom: 0.35rem;
+      font-size: 1.4rem;
+    }
+    .lock-card p {
+      color: #777;
+      font-size: 0.88rem;
+      margin-bottom: 1.5rem;
+    }
+    .lock-input-wrap {
+      position: relative;
+      margin-bottom: 1rem;
+    }
+    .lock-input-wrap input {
+      width: 100%;
+      padding: 0.75rem 2.8rem 0.75rem 1rem;
+      border: 1.5px solid var(--admin-border);
+      border-radius: 8px;
+      font-size: 1rem;
+      font-family: 'Poppins', sans-serif;
+      box-sizing: border-box;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .lock-input-wrap input:focus { border-color: var(--gold); }
+    .lock-input-wrap .toggle-pw {
+      position: absolute;
+      right: 0.85rem;
+      top: 50%;
+      transform: translateY(-50%);
+      cursor: pointer;
+      color: #999;
+      font-size: 0.9rem;
+    }
+    .lock-error {
+      color: #c0392b;
+      font-size: 0.83rem;
+      margin-bottom: 0.75rem;
+      display: none;
+    }
+    .lock-btn {
+      width: 100%;
+      padding: 0.8rem;
+      background: var(--gold);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: 'Poppins', sans-serif;
+      transition: background 0.2s;
+    }
+    .lock-btn:hover { background: #b8891e; }
+
+    /* ── Admin nav ── */
+    .admin-topbar {
+      background: var(--navy);
+      color: #fff;
+      padding: 0.85rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .admin-topbar .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-family: 'Playfair Display', serif;
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: #fff;
+      text-decoration: none;
+    }
+    .admin-topbar .brand i { color: var(--gold); }
+    .admin-topbar .topbar-actions { display: flex; gap: 0.75rem; align-items: center; }
+    .admin-topbar .topbar-actions a {
+      color: rgba(255,255,255,0.75);
+      text-decoration: none;
+      font-size: 0.85rem;
+      transition: color 0.2s;
+    }
+    .admin-topbar .topbar-actions a:hover { color: var(--gold); }
+    .admin-topbar .logout-btn {
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.25);
+      color: #fff;
+      padding: 0.35rem 0.9rem;
+      border-radius: 6px;
+      font-size: 0.83rem;
+      cursor: pointer;
+      font-family: 'Poppins', sans-serif;
+      transition: background 0.2s;
+    }
+    .admin-topbar .logout-btn:hover { background: rgba(255,255,255,0.2); }
+
+    /* ── Page layout ── */
+    .admin-main {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem 4rem;
+    }
+    .admin-page-header {
+      margin-bottom: 2rem;
+    }
+    .admin-page-header h1 {
+      font-family: 'Playfair Display', serif;
+      color: var(--navy);
+      font-size: 1.9rem;
+      margin-bottom: 0.3rem;
+    }
+    .admin-page-header p { color: #666; font-size: 0.92rem; }
+
+    /* ── Form card ── */
+    .admin-card {
+      background: #fff;
+      border-radius: var(--radius);
+      border: 1px solid var(--admin-border);
+      padding: 2rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+    }
+    .admin-card h3 {
+      font-family: 'Playfair Display', serif;
+      color: var(--navy);
+      font-size: 1.1rem;
+      margin-bottom: 1.25rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid var(--admin-border);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .admin-card h3 i { color: var(--gold); font-size: 0.95rem; }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+    .form-row.single { grid-template-columns: 1fr; }
+    .form-row.three { grid-template-columns: 1fr 1fr 1fr; }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+    .form-group label {
+      font-size: 0.83rem;
+      font-weight: 600;
+      color: #444;
+      letter-spacing: 0.02em;
+    }
+    .form-group label .req { color: #c0392b; margin-left: 2px; }
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      padding: 0.65rem 0.9rem;
+      border: 1.5px solid var(--admin-border);
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-family: 'Poppins', sans-serif;
+      color: #333;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      background: #fff;
+    }
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      border-color: var(--gold);
+      box-shadow: 0 0 0 3px rgba(201,162,39,0.12);
+    }
+    .form-group textarea { resize: vertical; min-height: 100px; line-height: 1.6; }
+    .form-group textarea.tall { min-height: 220px; }
+    .form-group .hint {
+      font-size: 0.78rem;
+      color: #888;
+      margin-top: 0.15rem;
+    }
+
+    /* richtext toolbar placeholder */
+    .richtext-toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.3rem;
+      padding: 0.5rem 0.75rem;
+      background: var(--admin-bg);
+      border: 1.5px solid var(--admin-border);
+      border-bottom: none;
+      border-radius: 8px 8px 0 0;
+    }
+    .richtext-toolbar button {
+      padding: 0.25rem 0.55rem;
+      background: #fff;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 0.82rem;
+      cursor: pointer;
+      font-family: 'Poppins', sans-serif;
+      transition: background 0.15s;
+    }
+    .richtext-toolbar button:hover { background: var(--gold); color: #fff; border-color: var(--gold); }
+    .form-group .richtext-area {
+      border-radius: 0 0 8px 8px;
+      border-top: none;
+      min-height: 260px;
+      font-family: monospace;
+      font-size: 0.85rem;
+      line-height: 1.7;
+    }
+
+    /* keyword/reference tags input */
+    .tag-input-wrap {
+      border: 1.5px solid var(--admin-border);
+      border-radius: 8px;
+      padding: 0.5rem 0.75rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      align-items: center;
+      cursor: text;
+      min-height: 44px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .tag-input-wrap:focus-within {
+      border-color: var(--gold);
+      box-shadow: 0 0 0 3px rgba(201,162,39,0.12);
+    }
+    .tag-input-wrap .tag-pill {
+      background: var(--navy);
+      color: #fff;
+      padding: 0.2rem 0.65rem;
+      border-radius: 20px;
+      font-size: 0.78rem;
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      white-space: nowrap;
+    }
+    .tag-input-wrap .tag-pill button {
+      background: none;
+      border: none;
+      color: rgba(255,255,255,0.7);
+      cursor: pointer;
+      font-size: 0.75rem;
+      padding: 0;
+      line-height: 1;
+    }
+    .tag-input-wrap .tag-pill button:hover { color: #fff; }
+    .tag-input-wrap input {
+      border: none;
+      outline: none;
+      font-size: 0.88rem;
+      font-family: 'Poppins', sans-serif;
+      flex: 1;
+      min-width: 120px;
+      padding: 0.15rem 0;
+    }
+
+    /* slug preview */
+    .slug-preview {
+      font-size: 0.8rem;
+      color: #888;
+      margin-top: 0.2rem;
+      font-family: monospace;
+    }
+    .slug-preview span { color: var(--navy); font-weight: 600; }
+
+    /* ── Submit row ── */
+    .submit-row {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-top: 0.5rem;
+    }
+    .btn-admin-submit {
+      background: var(--gold);
+      color: #fff;
+      border: none;
+      padding: 0.8rem 2rem;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: 'Poppins', sans-serif;
+      transition: background 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .btn-admin-submit:hover { background: #b8891e; }
+    .btn-admin-clear {
+      background: transparent;
+      color: #888;
+      border: 1.5px solid #ddd;
+      padding: 0.8rem 1.5rem;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      cursor: pointer;
+      font-family: 'Poppins', sans-serif;
+      transition: all 0.2s;
+    }
+    .btn-admin-clear:hover { border-color: #aaa; color: #555; }
+
+    /* ── Success panel ── */
+    #success-panel {
+      display: none;
+      background: #fff;
+      border-radius: var(--radius);
+      border: 1px solid #b2dfdb;
+      padding: 2rem;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+      margin-bottom: 1.5rem;
+    }
+    #success-panel .success-icon {
+      font-size: 2rem;
+      color: #27ae60;
+      margin-bottom: 0.75rem;
+    }
+    #success-panel h3 {
+      font-family: 'Playfair Display', serif;
+      color: var(--navy);
+      margin-bottom: 0.5rem;
+    }
+    #success-panel p { color: #555; font-size: 0.9rem; margin-bottom: 1rem; }
+    .json-output-box {
+      background: #1e1e1e;
+      color: #d4d4d4;
+      border-radius: 8px;
+      padding: 1.25rem;
+      font-family: 'Courier New', monospace;
+      font-size: 0.78rem;
+      line-height: 1.7;
+      overflow-x: auto;
+      white-space: pre;
+      margin: 1rem 0;
+      position: relative;
+    }
+    .copy-json-btn {
+      background: var(--gold);
+      color: #fff;
+      border: none;
+      padding: 0.5rem 1.1rem;
+      border-radius: 6px;
+      font-size: 0.83rem;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: 'Poppins', sans-serif;
+      margin-right: 0.75rem;
+      transition: background 0.2s;
+    }
+    .copy-json-btn:hover { background: #b8891e; }
+    .add-another-btn {
+      background: transparent;
+      color: var(--navy);
+      border: 1.5px solid var(--navy);
+      padding: 0.5rem 1.1rem;
+      border-radius: 6px;
+      font-size: 0.83rem;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: 'Poppins', sans-serif;
+      transition: all 0.2s;
+    }
+    .add-another-btn:hover { background: var(--navy); color: #fff; }
+    .view-iftaa-btn {
+      background: transparent;
+      color: var(--gold);
+      border: 1.5px solid var(--gold);
+      padding: 0.5rem 1.1rem;
+      border-radius: 6px;
+      font-size: 0.83rem;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: 'Poppins', sans-serif;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+    .view-iftaa-btn:hover { background: var(--gold); color: #fff; }
+
+    /* ── Saved fatwas table ── */
+    #saved-panel { margin-top: 2rem; }
+    #saved-panel h3 {
+      font-family: 'Playfair Display', serif;
+      color: var(--navy);
+      font-size: 1.1rem;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    #saved-panel h3 i { color: var(--gold); }
+    .saved-table-wrap { overflow-x: auto; }
+    table.saved-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.85rem;
+    }
+    table.saved-table th {
+      background: var(--navy);
+      color: #fff;
+      padding: 0.65rem 1rem;
+      text-align: left;
+      font-weight: 500;
+      font-size: 0.8rem;
+      letter-spacing: 0.04em;
+    }
+    table.saved-table td {
+      padding: 0.65rem 1rem;
+      border-bottom: 1px solid var(--admin-border);
+      color: #444;
+      vertical-align: middle;
+    }
+    table.saved-table tr:hover td { background: #fafbfc; }
+    table.saved-table .cat-badge {
+      font-size: 0.72rem;
+      padding: 0.15rem 0.55rem;
+      border-radius: 20px;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+    table.saved-table .action-btns { display: flex; gap: 0.4rem; }
+    table.saved-table .action-btns a,
+    table.saved-table .action-btns button {
+      padding: 0.3rem 0.65rem;
+      border-radius: 5px;
+      font-size: 0.75rem;
+      cursor: pointer;
+      font-family: 'Poppins', sans-serif;
+      text-decoration: none;
+      border: none;
+    }
+    table.saved-table .btn-view { background: var(--navy); color: #fff; }
+    table.saved-table .btn-delete { background: #fee; color: #c0392b; border: 1px solid #fcc; }
+    table.saved-table .btn-delete:hover { background: #c0392b; color: #fff; }
+    .empty-saved {
+      text-align: center;
+      padding: 2rem;
+      color: #aaa;
+      font-size: 0.88rem;
+    }
+    .empty-saved i { font-size: 1.5rem; display: block; margin-bottom: 0.5rem; }
+
+    @media (max-width: 650px) {
+      .form-row { grid-template-columns: 1fr; }
+      .form-row.three { grid-template-columns: 1fr; }
+      .admin-main { padding: 1.25rem 1rem 3rem; }
+    }
+  </style>
+</head>
+<body class="admin-wrapper">
+
+  <!-- ── Lock Screen ── -->
+  <div id="lock-screen">
+    <div class="lock-card">
+      <div class="lock-icon"><i class="fas fa-lock"></i></div>
+      <h2>Admin Access</h2>
+      <p>Enter the admin password to manage fatwas</p>
+      <div class="lock-input-wrap">
+        <input type="password" id="pw-input" placeholder="Password" autocomplete="current-password" />
+        <span class="toggle-pw" onclick="togglePw()"><i class="fas fa-eye" id="pw-eye"></i></span>
+      </div>
+      <div class="lock-error" id="lock-error">Incorrect password. Please try again.</div>
+      <button class="lock-btn" onclick="checkPassword()">
+        <i class="fas fa-sign-in-alt"></i> Sign In
+      </button>
+    </div>
+  </div>
+
+  <!-- ── Admin Interface (hidden until unlocked) ── -->
+  <div id="admin-content" style="display:none;">
+
+    <div class="admin-topbar">
+      <a href="../iftaa.html" class="brand">
+        <i class="fas fa-mosque"></i>
+        DUNY Admin — Iftāʾ Management
+      </a>
+      <div class="topbar-actions">
+        <a href="../iftaa.html"><i class="fas fa-external-link-alt"></i> View Iftaa Page</a>
+        <button class="logout-btn" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</button>
+      </div>
+    </div>
+
+    <div class="admin-main">
+      <div class="admin-page-header">
+        <h1>Add New Fatwa</h1>
+        <p>Fill in the details below. The fatwa will be saved locally and immediately visible on the Iftaa page. Copy the generated JSON to permanently add it to <code>data/fatwas.json</code>.</p>
+      </div>
+
+      <!-- Success panel -->
+      <div id="success-panel">
+        <div class="success-icon"><i class="fas fa-check-circle"></i></div>
+        <h3>Fatwa Saved Successfully!</h3>
+        <p>The fatwa has been saved to your browser and is now visible on the Iftaa page. To make it permanent across all devices, add the JSON entry below to <code>data/fatwas.json</code> and push to GitHub.</p>
+        <div class="json-output-box" id="json-output"></div>
+        <div style="display:flex;gap:0.75rem;flex-wrap:wrap;">
+          <button class="copy-json-btn" onclick="copyJson()"><i class="fas fa-copy"></i> Copy JSON</button>
+          <a href="../iftaa.html" class="view-iftaa-btn" target="_blank"><i class="fas fa-eye"></i> View Iftaa Page</a>
+          <button class="add-another-btn" onclick="resetForm()"><i class="fas fa-plus"></i> Add Another</button>
+        </div>
+      </div>
+
+      <!-- Form -->
+      <form id="fatwa-form" novalidate>
+
+        <!-- Basic Info -->
+        <div class="admin-card">
+          <h3><i class="fas fa-info-circle"></i> Basic Information</h3>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>Title (English) <span class="req">*</span></label>
+              <input type="text" id="f-title" placeholder="e.g. Ruling on Using a Credit Card" required />
+            </div>
+            <div class="form-group">
+              <label>Arabic Title</label>
+              <input type="text" id="f-arabic-title" placeholder="e.g. حكم استخدام بطاقة الائتمان" dir="auto" />
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>URL Slug <span class="req">*</span></label>
+              <input type="text" id="f-slug" placeholder="ruling-on-credit-card" required />
+              <div class="slug-preview">Preview: <span id="slug-preview-text">fatwa.html?slug=your-slug</span></div>
+            </div>
+            <div class="form-group">
+              <label>Unique ID <span class="req">*</span></label>
+              <input type="number" id="f-id" placeholder="e.g. 9" required />
+              <div class="hint">Must be unique. Current max: <span id="max-id">—</span></div>
+            </div>
+          </div>
+
+          <div class="form-row three">
+            <div class="form-group">
+              <label>Category <span class="req">*</span></label>
+              <select id="f-category" required>
+                <option value="">— Select —</option>
+                <option value="Salah">Salah (Prayer)</option>
+                <option value="Zakaat">Zakaat</option>
+                <option value="Sawm">Sawm (Fasting)</option>
+                <option value="Hajj">Hajj &amp; Umrah</option>
+                <option value="Business & Finance">Business &amp; Finance</option>
+                <option value="Food & Drink">Food &amp; Drink</option>
+                <option value="Marriage & Family">Marriage &amp; Family</option>
+                <option value="Purification">Purification (Taharah)</option>
+                <option value="Inheritance">Inheritance</option>
+                <option value="General">General</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Mufti / Scholar <span class="req">*</span></label>
+              <select id="f-mufti" required>
+                <option value="">— Select —</option>
+                <option value="Mufti Mizanur Rahman">Mufti Mizanur Rahman</option>
+                <option value="Mufti Manzoor">Mufti Manzoor</option>
+                <option value="Mufti Abdul Muqtadir">Mufti Abdul Muqtadir</option>
+                <option value="Mawlana Aslam Shiekh">Mawlana Aslam Shiekh</option>
+                <option value="Darul Uloom New York">Darul Uloom New York</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Date Issued <span class="req">*</span></label>
+              <input type="date" id="f-date" required />
+            </div>
+          </div>
+
+          <div class="form-row single">
+            <div class="form-group">
+              <label>Madhab</label>
+              <select id="f-madhab">
+                <option value="Hanafi">Hanafi</option>
+                <option value="Shafi'i">Shafi'i</option>
+                <option value="Maliki">Maliki</option>
+                <option value="Hanbali">Hanbali</option>
+                <option value="General">General / Cross-Madhab</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Question & Answer -->
+        <div class="admin-card">
+          <h3><i class="fas fa-question-circle"></i> Question</h3>
+          <div class="form-group">
+            <textarea id="f-question" class="tall" placeholder="Write the question as submitted by the inquirer…" required></textarea>
+            <div class="hint">Write in plain text. This will appear in the blue question box on the fatwa page.</div>
+          </div>
+        </div>
+
+        <div class="admin-card">
+          <h3><i class="fas fa-scroll"></i> Answer</h3>
+          <div class="form-group">
+            <div class="richtext-toolbar" id="rt-toolbar">
+              <button type="button" onclick="rt('bold')"><b>B</b></button>
+              <button type="button" onclick="rt('italic')"><i>I</i></button>
+              <button type="button" onclick="rt('underline')"><u>U</u></button>
+              <button type="button" onclick="rtWrap('strong')">Strong</button>
+              <button type="button" onclick="rtWrap('em')">Em</button>
+              <button type="button" onclick="rtWrap('p')">¶ Para</button>
+              <button type="button" onclick="rtWrap('ul')">• List</button>
+              <button type="button" onclick="rtWrap('ol')">1. List</button>
+              <button type="button" onclick="rtWrap('li')">Li</button>
+              <button type="button" onclick="rtInsert('<br />')">BR</button>
+              <button type="button" onclick="rtWrap('blockquote')">Quote</button>
+              <button type="button" onclick="togglePreview()"><i class="fas fa-eye"></i> Preview</button>
+            </div>
+            <textarea id="f-answer" class="richtext-area" placeholder="Write the detailed fatwa answer here. You can use HTML tags like &lt;p&gt;, &lt;strong&gt;, &lt;ul&gt;, &lt;li&gt;…" required></textarea>
+            <div id="answer-preview" style="display:none;border:1.5px solid var(--admin-border);border-top:none;border-radius:0 0 8px 8px;padding:1.25rem;min-height:120px;background:#fff;font-size:0.9rem;line-height:1.8;color:#333;"></div>
+            <div class="hint">HTML is supported. Use &lt;p&gt; for paragraphs, &lt;strong&gt; for bold, &lt;ul&gt;/&lt;li&gt; for lists.</div>
+          </div>
+        </div>
+
+        <!-- Keywords & References -->
+        <div class="admin-card">
+          <h3><i class="fas fa-tags"></i> Keywords &amp; References</h3>
+
+          <div class="form-row single">
+            <div class="form-group">
+              <label>Keywords</label>
+              <div class="tag-input-wrap" id="kw-wrap" onclick="document.getElementById('kw-input').focus()">
+                <input type="text" id="kw-input" placeholder="Type a keyword and press Enter or comma…" />
+              </div>
+              <div class="hint">Press <kbd>Enter</kbd> or <kbd>,</kbd> to add. These appear as clickable filter pills on the fatwa page.</div>
+            </div>
+          </div>
+
+          <div class="form-row single">
+            <div class="form-group">
+              <label>References (Islamic texts)</label>
+              <div class="tag-input-wrap" id="ref-wrap" onclick="document.getElementById('ref-input').focus()" style="--tag-color: #2c3e50;">
+                <input type="text" id="ref-input" placeholder="e.g. Al-Fatawa Al-Hindiyya, Vol 1 — press Enter to add…" />
+              </div>
+              <div class="hint">Each reference will appear in the sidebar of the fatwa detail page.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Submit -->
+        <div class="admin-card">
+          <h3><i class="fas fa-save"></i> Save Fatwa</h3>
+          <div class="submit-row">
+            <button type="submit" class="btn-admin-submit">
+              <i class="fas fa-save"></i> Save &amp; Publish
+            </button>
+            <button type="button" class="btn-admin-clear" onclick="resetForm()">
+              <i class="fas fa-undo"></i> Clear Form
+            </button>
+          </div>
+        </div>
+
+      </form>
+
+      <!-- Saved Fatwas -->
+      <div id="saved-panel">
+        <div class="admin-card">
+          <h3><i class="fas fa-list"></i> Locally Saved Fatwas <span id="saved-count" style="font-family:Poppins;font-weight:400;font-size:0.82rem;color:#888;margin-left:0.5rem;"></span></h3>
+          <p style="font-size:0.83rem;color:#888;margin-bottom:1rem;">These fatwas are stored in your browser and visible on the Iftaa page. They will be lost if you clear browser data. Copy their JSON and add to <code>data/fatwas.json</code> for permanent storage.</p>
+          <div id="saved-table-container">
+            <div class="empty-saved"><i class="fas fa-inbox"></i>No locally saved fatwas yet.</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div><!-- /admin-content -->
+
+  <script>
+    // ── Password ──────────────────────────────────────────────────
+    const ADMIN_PW = 'duny2025'; // Change this password as needed
+
+    function checkPassword() {
+      const val = document.getElementById('pw-input').value;
+      if (val === ADMIN_PW) {
+        document.getElementById('lock-screen').style.display = 'none';
+        document.getElementById('admin-content').style.display = 'block';
+        sessionStorage.setItem('duny_admin', '1');
+        initAdmin();
+      } else {
+        document.getElementById('lock-error').style.display = 'block';
+        document.getElementById('pw-input').value = '';
+        document.getElementById('pw-input').focus();
+      }
+    }
+
+    function logout() {
+      sessionStorage.removeItem('duny_admin');
+      document.getElementById('lock-screen').style.display = 'flex';
+      document.getElementById('admin-content').style.display = 'none';
+      document.getElementById('pw-input').value = '';
+    }
+
+    function togglePw() {
+      const inp = document.getElementById('pw-input');
+      const eye = document.getElementById('pw-eye');
+      if (inp.type === 'password') {
+        inp.type = 'text';
+        eye.className = 'fas fa-eye-slash';
+      } else {
+        inp.type = 'password';
+        eye.className = 'fas fa-eye';
+      }
+    }
+
+    document.getElementById('pw-input').addEventListener('keydown', e => {
+      if (e.key === 'Enter') checkPassword();
+    });
+
+    // Auto-login if session still active
+    if (sessionStorage.getItem('duny_admin') === '1') {
+      document.getElementById('lock-screen').style.display = 'none';
+      document.getElementById('admin-content').style.display = 'block';
+      window.addEventListener('DOMContentLoaded', initAdmin);
+    }
+
+    // ── Tag Input ─────────────────────────────────────────────────
+    const tagState = { keywords: [], references: [] };
+
+    function addTag(type, value) {
+      value = value.trim().replace(/,$/, '').trim();
+      if (!value) return;
+      if (!tagState[type].includes(value)) {
+        tagState[type].push(value);
+        renderTags(type);
+      }
+    }
+
+    function removeTag(type, idx) {
+      tagState[type].splice(idx, 1);
+      renderTags(type);
+    }
+
+    function renderTags(type) {
+      const wrap = document.getElementById(type === 'keywords' ? 'kw-wrap' : 'ref-wrap');
+      const input = document.getElementById(type === 'keywords' ? 'kw-input' : 'ref-input');
+      // Remove existing pills
+      wrap.querySelectorAll('.tag-pill').forEach(p => p.remove());
+      tagState[type].forEach((tag, i) => {
+        const pill = document.createElement('div');
+        pill.className = 'tag-pill';
+        pill.innerHTML = `${tag}<button type="button" onclick="removeTag('${type}', ${i})" title="Remove">×</button>`;
+        wrap.insertBefore(pill, input);
+      });
+    }
+
+    function setupTagInput(inputId, type) {
+      const input = document.getElementById(inputId);
+      input.addEventListener('keydown', e => {
+        if (e.key === 'Enter' || e.key === ',') {
+          e.preventDefault();
+          addTag(type, input.value);
+          input.value = '';
+        } else if (e.key === 'Backspace' && !input.value && tagState[type].length) {
+          removeTag(type, tagState[type].length - 1);
+        }
+      });
+      input.addEventListener('blur', () => {
+        if (input.value.trim()) {
+          addTag(type, input.value);
+          input.value = '';
+        }
+      });
+    }
+
+    // ── Slug auto-generate ────────────────────────────────────────
+    function toSlug(str) {
+      return str.toLowerCase()
+        .replace(/[^\w\s-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .replace(/^-|-$/g, '');
+    }
+
+    document.getElementById('f-title').addEventListener('input', function() {
+      const slug = toSlug(this.value);
+      const slugField = document.getElementById('f-slug');
+      if (!slugField._manuallyEdited) {
+        slugField.value = slug;
+        document.getElementById('slug-preview-text').textContent = slug ? `fatwa.html?slug=${slug}` : 'fatwa.html?slug=your-slug';
+      }
+    });
+
+    document.getElementById('f-slug').addEventListener('input', function() {
+      this._manuallyEdited = !!this.value;
+      document.getElementById('slug-preview-text').textContent = this.value
+        ? `fatwa.html?slug=${this.value}`
+        : 'fatwa.html?slug=your-slug';
+    });
+
+    // ── Rich text helpers ─────────────────────────────────────────
+    function rt(cmd) { document.execCommand(cmd, false, null); }
+
+    function rtWrap(tag) {
+      const ta = document.getElementById('f-answer');
+      const start = ta.selectionStart, end = ta.selectionEnd;
+      const sel = ta.value.substring(start, end);
+      const wrapped = `<${tag}>${sel}</${tag}>`;
+      ta.setRangeText(wrapped, start, end, 'end');
+      ta.focus();
+    }
+
+    function rtInsert(html) {
+      const ta = document.getElementById('f-answer');
+      const pos = ta.selectionStart;
+      ta.setRangeText(html, pos, pos, 'end');
+      ta.focus();
+    }
+
+    let previewVisible = false;
+    function togglePreview() {
+      previewVisible = !previewVisible;
+      const ta = document.getElementById('f-answer');
+      const pv = document.getElementById('answer-preview');
+      if (previewVisible) {
+        pv.innerHTML = ta.value;
+        ta.style.display = 'none';
+        pv.style.display = 'block';
+      } else {
+        ta.style.display = 'block';
+        pv.style.display = 'none';
+      }
+    }
+
+    // ── LocalStorage helpers ──────────────────────────────────────
+    function getLocalFatwas() {
+      try { return JSON.parse(localStorage.getItem('duny_fatwas') || '[]'); }
+      catch { return []; }
+    }
+    function saveLocalFatwas(arr) {
+      localStorage.setItem('duny_fatwas', JSON.stringify(arr));
+    }
+
+    // ── Init ──────────────────────────────────────────────────────
+    function initAdmin() {
+      setupTagInput('kw-input', 'keywords');
+      setupTagInput('ref-input', 'references');
+
+      // Set today's date
+      document.getElementById('f-date').value = new Date().toISOString().split('T')[0];
+
+      // Show max existing ID
+      updateMaxId();
+      renderSavedTable();
+
+      document.getElementById('fatwa-form').addEventListener('submit', handleSubmit);
+    }
+
+    function updateMaxId() {
+      fetch('../data/fatwas.json')
+        .then(r => r.json())
+        .then(data => {
+          const localFatwas = getLocalFatwas();
+          const allIds = [...data, ...localFatwas].map(f => parseInt(f.id) || 0);
+          const maxId = allIds.length ? Math.max(...allIds) : 0;
+          document.getElementById('max-id').textContent = maxId;
+          document.getElementById('f-id').value = maxId + 1;
+        })
+        .catch(() => {
+          const localFatwas = getLocalFatwas();
+          const allIds = localFatwas.map(f => parseInt(f.id) || 0);
+          const maxId = allIds.length ? Math.max(...allIds) : 0;
+          document.getElementById('max-id').textContent = maxId;
+          document.getElementById('f-id').value = maxId + 1;
+        });
+    }
+
+    // ── Form submission ───────────────────────────────────────────
+    function handleSubmit(e) {
+      e.preventDefault();
+
+      const title = document.getElementById('f-title').value.trim();
+      const slug = document.getElementById('f-slug').value.trim();
+      const id = parseInt(document.getElementById('f-id').value);
+      const category = document.getElementById('f-category').value;
+      const mufti = document.getElementById('f-mufti').value;
+      const date = document.getElementById('f-date').value;
+      const question = document.getElementById('f-question').value.trim();
+      const answer = document.getElementById('f-answer').value.trim();
+
+      // Basic validation
+      const errors = [];
+      if (!title) errors.push('Title is required.');
+      if (!slug) errors.push('URL Slug is required.');
+      if (!id || isNaN(id)) errors.push('A valid unique ID is required.');
+      if (!category) errors.push('Category is required.');
+      if (!mufti) errors.push('Mufti/Scholar is required.');
+      if (!date) errors.push('Date is required.');
+      if (!question) errors.push('Question is required.');
+      if (!answer) errors.push('Answer is required.');
+
+      if (errors.length) {
+        alert('Please fix the following:\n\n• ' + errors.join('\n• '));
+        return;
+      }
+
+      const fatwa = {
+        id,
+        slug,
+        title,
+        arabic_title: document.getElementById('f-arabic-title').value.trim(),
+        question,
+        answer,
+        mufti,
+        date,
+        category,
+        keywords: [...tagState.keywords],
+        references: [...tagState.references],
+        madhab: document.getElementById('f-madhab').value
+      };
+
+      // Save to localStorage
+      const existing = getLocalFatwas();
+      // Remove if same slug exists
+      const filtered = existing.filter(f => f.slug !== slug);
+      filtered.unshift(fatwa);
+      saveLocalFatwas(filtered);
+
+      // Show success
+      showSuccess(fatwa);
+      renderSavedTable();
+    }
+
+    function showSuccess(fatwa) {
+      const panel = document.getElementById('success-panel');
+      panel.style.display = 'block';
+      document.getElementById('json-output').textContent = JSON.stringify(fatwa, null, 2);
+      panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function copyJson() {
+      const text = document.getElementById('json-output').textContent;
+      navigator.clipboard.writeText(text).then(() => {
+        const btn = document.querySelector('.copy-json-btn');
+        btn.innerHTML = '<i class="fas fa-check"></i> Copied!';
+        setTimeout(() => { btn.innerHTML = '<i class="fas fa-copy"></i> Copy JSON'; }, 2000);
+      });
+    }
+
+    function resetForm() {
+      document.getElementById('success-panel').style.display = 'none';
+      document.getElementById('fatwa-form').reset();
+      tagState.keywords = [];
+      tagState.references = [];
+      renderTags('keywords');
+      renderTags('references');
+      document.getElementById('f-slug')._manuallyEdited = false;
+      document.getElementById('slug-preview-text').textContent = 'fatwa.html?slug=your-slug';
+      document.getElementById('f-date').value = new Date().toISOString().split('T')[0];
+      if (previewVisible) togglePreview();
+      updateMaxId();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // ── Saved fatwas table ────────────────────────────────────────
+    const catColors = {
+      'Salah': '#1a3c5e', 'Zakaat': '#b8891e', 'Sawm': '#1e6b4a',
+      'Hajj': '#7b2d8b', 'Business & Finance': '#1565c0',
+      'Food & Drink': '#2e7d32', 'Marriage & Family': '#c62828',
+      'Purification': '#00695c', 'Inheritance': '#4527a0', 'General': '#546e7a'
+    };
+
+    function renderSavedTable() {
+      const fatwas = getLocalFatwas();
+      const container = document.getElementById('saved-table-container');
+      const countEl = document.getElementById('saved-count');
+      countEl.textContent = fatwas.length ? `(${fatwas.length} saved locally)` : '';
+
+      if (!fatwas.length) {
+        container.innerHTML = '<div class="empty-saved"><i class="fas fa-inbox"></i>No locally saved fatwas yet.</div>';
+        return;
+      }
+
+      const rows = fatwas.map((f, i) => {
+        const color = catColors[f.category] || '#546e7a';
+        return `<tr>
+          <td>${f.id}</td>
+          <td>${escHtml(f.title)}</td>
+          <td><span class="cat-badge" style="background:${color}20;color:${color};">${escHtml(f.category)}</span></td>
+          <td>${escHtml(f.mufti)}</td>
+          <td>${f.date}</td>
+          <td class="action-btns">
+            <a href="../fatwa.html?slug=${encodeURIComponent(f.slug)}" target="_blank" class="btn-view">View</a>
+            <button class="btn-delete" onclick="deleteSaved(${i})">Delete</button>
+          </td>
+        </tr>`;
+      }).join('');
+
+      container.innerHTML = `<div class="saved-table-wrap">
+        <table class="saved-table">
+          <thead><tr><th>ID</th><th>Title</th><th>Category</th><th>Mufti</th><th>Date</th><th>Actions</th></tr></thead>
+          <tbody>${rows}</tbody>
+        </table>
+      </div>`;
+    }
+
+    function deleteSaved(idx) {
+      if (!confirm('Delete this fatwa from local storage?')) return;
+      const fatwas = getLocalFatwas();
+      fatwas.splice(idx, 1);
+      saveLocalFatwas(fatwas);
+      renderSavedTable();
+    }
+
+    function escHtml(str) {
+      return (str || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
+  </script>
+</body>
+</html>

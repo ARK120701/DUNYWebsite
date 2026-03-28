@@ -1,0 +1,160 @@
+{
+  "fatwas": [
+    {
+      "id": "1",
+      "slug": "qasr-shortening-prayers-during-travel",
+      "title": "Shortening (Qaṣr) of Prayers During Travel",
+      "arabic_title": "قَصْرُ الصَّلَاةِ فِي السَّفَرِ",
+      "question": "I will be traveling from New York to Chicago for work, approximately 800 miles away. When does the ruling of a musāfir apply to me, and how should I pray during the journey and my stay there?",
+      "answer": "<p>According to the Ḥanafī madhhab, a person becomes a <em>musāfir</em> (traveler) and the rulings of safar apply when three conditions are met:</p><ol><li>The intended journey is 48 miles (approximately 77 km) or more, measured from one's hometown (<em>waṭan al-aṣl</em>).</li><li>The intention to travel that distance is made before or at the time of departure.</li><li>One has physically exited the built-up residential area of one's hometown.</li></ol><p>During travel, a <em>musāfir</em> must shorten (<em>qaṣr</em>) the four-rak'ah prayers: Ẓuhr, 'Aṣr, and 'Ishā' are prayed as two rak'ahs each. Fajr (2 rak'ahs) and Maghrib (3 rak'ahs) remain unchanged.</p><p>An important distinction in the Ḥanafī school is that <em>qaṣr</em> during travel is <strong>wājib</strong> (obligatory), not merely a concession. If a <em>musāfir</em> prays four rak'ahs for Ẓuhr without sitting for tashahhud at the second rak'ah, the prayer will be invalid and must be repeated.</p><p>The ruling of <em>musāfir</em> continues until one of two things occurs: (1) one returns to one's hometown, or (2) one makes a firm intention (<em>niyyah</em>) to remain in a single location for <strong>15 days or more</strong>, at which point one becomes a <em>muqīm</em> (resident) and resumes full prayers from that moment onward.</p><p>Your journey to Chicago clearly exceeds the travel distance threshold. You should perform <em>qaṣr</em> throughout the trip. If you intend to stay in Chicago for 15 or more days, you will become a <em>muqīm</em> upon making that intention and should resume full prayers from that point.</p>",
+      "mufti": "Mufti Mizanur Rahman",
+      "date": "2025-01-10",
+      "category": "Salah",
+      "keywords": ["travel", "qasr", "shortening", "musafir", "salah", "prayer", "safar", "iqamah", "journey"],
+      "references": [
+        "Raddul Muḥtār 'alā Durril Mukhtār (Ibn 'Ābidīn), Vol. 2",
+        "Al-Hidāyah (Al-Marghinānī), Vol. 1",
+        "Fatāwā Hindiyya, Vol. 1",
+        "Nūrul Īḍāḥ with Marāqil Falāḥ"
+      ],
+      "madhab": "Hanafi"
+    },
+    {
+      "id": "2",
+      "slug": "zakaat-on-savings-and-gold",
+      "title": "Calculating Zakāt on Savings, Gold, and Debts",
+      "arabic_title": "حِسَابُ زَكَاةِ الْمُدَّخَرَاتِ وَالذَّهَبِ وَالدُّيُونِ",
+      "question": "I have $15,000 in my bank account and gold jewelry worth approximately $3,000. I also owe $2,000 in credit card debt. Is Zakāt obligatory on me, and how do I calculate it?",
+      "answer": "<p>Zakāt becomes obligatory upon a Muslim when two conditions are simultaneously met:</p><ol><li>One's net Zakātable wealth reaches or exceeds the <em>niṣāb</em> (minimum threshold).</li><li>A full lunar year (<em>ḥawl</em>) passes while one's wealth remains at or above the <em>niṣāb</em>.</li></ol><h4>Determining the Niṣāb</h4><p>The <em>niṣāb</em> is set at either 87.48g of pure gold or 612.36g of silver. Due to the significant difference in value between the two metals, scholars generally advise using the silver <em>niṣāb</em> as it benefits the recipients of Zakāt. Please verify the current silver price to determine the dollar value of the <em>niṣāb</em> at the time of your Zakāt date.</p><h4>Calculating Your Zakāt</h4><p>Regarding gold jewelry: in the Ḥanafī school, gold and silver jewelry worn regularly by women is still Zakātable, unlike the position of some other schools. Therefore, your gold jewelry of $3,000 is included.</p><p><strong>Zakātable assets:</strong></p><ul><li>Cash savings: $15,000</li><li>Gold jewelry: $3,000</li><li>Subtotal: $18,000</li></ul><p><strong>Deductions:</strong> Immediate debts that are currently due may be deducted from Zakātable wealth. Your $2,000 credit card debt (assuming it is currently payable) may be deducted.</p><p><strong>Net Zakātable wealth:</strong> $18,000 − $2,000 = <strong>$16,000</strong></p><p>If $16,000 exceeds the <em>niṣāb</em> value, and you have maintained wealth at or above the <em>niṣāb</em> for a complete lunar year, Zakāt is obligatory.</p><p><strong>Zakāt due:</strong> 2.5% × $16,000 = <strong>$400</strong></p><p>We recommend contacting the Darul Uloom for the current <em>niṣāb</em> values, as gold and silver prices fluctuate regularly.</p>",
+      "mufti": "Mufti Manzoor",
+      "date": "2025-01-18",
+      "category": "Zakaat",
+      "keywords": ["zakaat", "nisab", "savings", "gold", "jewelry", "calculation", "hawl", "2.5%", "debt", "silver"],
+      "references": [
+        "Raddul Muḥtār (Ibn 'Ābidīn), Vol. 3",
+        "Fatāwā Hindiyya, Vol. 1",
+        "Al-Ikhtiyār Li-Ta'līl Al-Mukhtār (Al-Mawṣilī)",
+        "Fatāwā Maḥmūdiyya, Vol. 14"
+      ],
+      "madhab": "Hanafi"
+    },
+    {
+      "id": "3",
+      "slug": "using-inhaler-while-fasting",
+      "title": "Using a Medically Necessary Inhaler While Fasting",
+      "arabic_title": "اسْتِخْدَامُ الْبَخَّاخِ أَثْنَاءَ الصِّيَامِ",
+      "question": "I have asthma and must use my inhaler several times a day. Does using my inhaler break my Ramadān fast? I am unable to go without it due to my medical condition.",
+      "answer": "<p>This is a question upon which there is legitimate scholarly difference of opinion (<em>ikhtilāf</em>), and both positions deserve consideration.</p><h4>The Majority Opinion (Fast is Broken)</h4><p>The predominant position in the Ḥanafī madhhab, as well as that of many contemporary scholars, is that using an inhaler <strong>does break the fast</strong>, because the inhaled medication — even in aerosol form — reaches the lungs, which are an internal body cavity. The principle is that anything that enters a recognized internal cavity (<em>jawf</em>) through a recognized opening breaks the fast, regardless of the amount.</p><h4>The Minority Opinion (Fast is Not Broken)</h4><p>Some contemporary scholars of high caliber, taking into account modern medical understanding, have held that a standard metered-dose inhaler does not break the fast because the particles are extremely fine and only a negligible trace reaches the stomach. They argue that the substance does not nourish nor satisfy hunger, and the minute quantity does not meet the threshold that breaks a fast.</p><h4>Ruling for Your Situation</h4><p>Given that your use of the inhaler is medically necessary, we advise the following:</p><ol><li>If you are physically able to fast safely, you may act upon the minority opinion that the inhaler does not break the fast, given the medical necessity and the existence of a valid scholarly difference of opinion.</li><li>If the asthma is severe enough that fasting itself poses a genuine medical risk, you are permitted to break the fast and make it up (<em>qaḍā'</em>) at a later date. If your condition is permanent and fasting is not medically feasible, you may pay <em>fidyah</em> (expiation) instead.</li></ol><p>We strongly advise consulting both a physician and a qualified scholar together to determine the safest and most appropriate course of action for your specific medical situation.</p>",
+      "mufti": "Mufti Mizanur Rahman",
+      "date": "2025-02-03",
+      "category": "Sawm",
+      "keywords": ["fasting", "ramadan", "inhaler", "asthma", "medical", "sawm", "breaking fast", "fidyah", "qada"],
+      "references": [
+        "Fatāwā Hindiyya, Vol. 1",
+        "Raddul Muḥtār (Ibn 'Ābidīn), Vol. 2",
+        "Contemporary Fatāwā — Mufti Taqi Usmani",
+        "Aḥsan al-Fatāwā, Vol. 4"
+      ],
+      "madhab": "Hanafi"
+    },
+    {
+      "id": "4",
+      "slug": "conventional-mortgage-ruling",
+      "title": "Ruling on Taking a Conventional Interest-Based Mortgage",
+      "arabic_title": "حُكْمُ الرَّهْنِ الْعَقَارِيِّ الرِّبَوِيِّ",
+      "question": "I am looking to purchase a home in New York. Given the extremely high cost of housing here, is it permissible for me to take a conventional bank mortgage with interest, on the grounds of necessity (ḍarūrah)?",
+      "answer": "<p>The prohibition of <em>ribā</em> (interest) is among the most emphatic and categorical prohibitions in the Qur'ān and Sunnah. Allah (SWT) declares war on those who persist in consuming ribā (Al-Baqarah: 278-279), and the Prophet ﷺ cursed the one who takes, gives, records, and witnesses an interest-bearing transaction.</p><h4>Does Necessity (Ḍarūrah) Apply?</h4><p>The principle of <em>ḍarūrah</em> (dire necessity) is a valid Islamic legal concept that can permit otherwise forbidden things in extreme circumstances. However, classical and contemporary scholars of Fiqh have generally agreed that mere <em>ḥājah</em> (need or hardship) does not rise to the level of <em>ḍarūrah</em> that would permit ribā in a home purchase, because:</p><ol><li>Owning a home is not a necessity (<em>ḍarūrah</em>) in the legal sense — one can live in rented accommodation.</li><li>Islamic alternatives exist, including Sharī'ah-compliant home financing options (such as Murābaḥah, Ijārah, or Diminishing Mushārakah) offered by several institutions in the United States.</li><li>The general hardship of high housing costs, while real, does not constitute the individual-specific dire necessity that would permit a categorical prohibition.</li></ol><h4>Our Ruling</h4><p>A conventional interest-based mortgage is <strong>not permissible</strong> for a Muslim, even in a high-cost housing market. We strongly urge you to explore the Sharī'ah-compliant home financing options that are now available in many parts of the United States. While these options may sometimes be less convenient or slightly more costly, they preserve one's religion and protect one from a grave sin.</p><p>If you are in a situation of genuine necessity, please contact the Darul Uloom directly so your specific circumstances can be assessed by our scholars.</p>",
+      "mufti": "Mufti Manzoor",
+      "date": "2025-02-14",
+      "category": "Business & Finance",
+      "keywords": ["mortgage", "riba", "interest", "home purchase", "darura", "necessity", "halal finance", "house", "bank"],
+      "references": [
+        "Surah Al-Baqarah, Āyāt 275–279",
+        "Ṣaḥīḥ Muslim — Kitāb al-Musāqāt",
+        "Raddul Muḥtār (Ibn 'Ābidīn), Vol. 5",
+        "Contemporary Fatāwā — Mufti Taqi Usmani",
+        "Fatāwā Usmānī, Vol. 3"
+      ],
+      "madhab": "Hanafi"
+    },
+    {
+      "id": "5",
+      "slug": "gelatin-in-food-products",
+      "title": "Ruling on Gelatin in Food Products",
+      "arabic_title": "حُكْمُ الْجِيلَاتِينِ فِي الْمَأْكُولَاتِ",
+      "question": "Many food products such as yogurts, candies, and vitamins contain gelatin. If the source of the gelatin is not specified on the label, is it permissible to consume?",
+      "answer": "<p>Gelatin is a protein derived from the bones, skin, and connective tissue of animals. Its permissibility depends entirely on the source of the animal from which it is extracted.</p><h4>Types of Gelatin and Their Rulings</h4><ul><li><strong>Fish or plant-based gelatin:</strong> Permissible without restriction.</li><li><strong>Gelatin from a ḥalāl-slaughtered animal (bovine or ovine):</strong> Permissible.</li><li><strong>Gelatin from pork or a pig:</strong> <strong>Ḥarām</strong> (forbidden), without exception.</li><li><strong>Gelatin from a non-ḥalāl-slaughtered cattle/sheep:</strong> There is a significant difference of opinion. The majority Ḥanafī position is that it remains impermissible.</li></ul><h4>The Issue of 'Istiḥālah (Transformation)</h4><p>Some contemporary scholars argue that gelatin derived from pork undergoes such complete chemical transformation (<em>istiḥālah</em>) that it becomes a new substance, and is therefore permissible. However, the mainstream Ḥanafī position, as well as that of many contemporary certification bodies, does <strong>not</strong> accept this argument as sufficient to render pork-derived gelatin ḥalāl.</p><h4>Practical Guidance</h4><p>When the source of gelatin is unlisted or unclear on a food product:</p><ol><li>The default assumption when purchasing from a non-Muslim manufacturer is that the source is likely pork or non-ḥalāl animal, particularly in Western countries where pork-derived gelatin is the most common and least expensive form.</li><li>We advise avoiding products with unlisted gelatin unless the product carries a recognized ḥalāl certification.</li><li>Gelatin listed as 'bovine gelatin' without ḥalāl certification is still questionable — seek certified ḥalāl alternatives where possible.</li></ol>",
+      "mufti": "Mufti Mizanur Rahman",
+      "date": "2025-02-22",
+      "category": "Food & Drink",
+      "keywords": ["gelatin", "food", "halal", "haram", "pork", "ingredients", "vitamins", "candy", "istihalah", "certification"],
+      "references": [
+        "Raddul Muḥtār (Ibn 'Ābidīn), Vol. 1",
+        "Fatāwā Hindiyya, Vol. 5",
+        "Fatāwā Raḥīmiyya",
+        "Aḥsan al-Fatāwā, Vol. 8",
+        "Fatāwā Maḥmūdiyya, Vol. 18"
+      ],
+      "madhab": "Hanafi"
+    },
+    {
+      "id": "6",
+      "slug": "nikah-over-video-call",
+      "title": "Validity of a Nikāḥ Conducted via Video Call",
+      "arabic_title": "صِحَّةُ النِّكَاحِ عَبْرَ مُكَالَمَةِ الْفِيدِيُو",
+      "question": "Due to immigration restrictions, the groom is in Pakistan and cannot travel to the US for the wedding. Can the Nikāḥ be performed with the groom joining via video call, while the bride, her walī, and witnesses are physically present in New York?",
+      "answer": "<p>The Nikāḥ (Islamic marriage contract) requires, according to the Ḥanafī school, the following essential elements:</p><ol><li><em>Ījāb</em> (offer) from one party</li><li><em>Qabūl</em> (acceptance) from the other party</li><li>Two male witnesses (or one male and two female witnesses) who are Muslim, adult, and sane</li><li>The offer and acceptance must occur in a single <em>majlis</em> (session)</li></ol><h4>The Issue with Video Call Nikāḥ</h4><p>The central question is whether a video call constitutes a single valid <em>majlis</em> for the purposes of Nikāḥ. The majority of contemporary Ḥanafī scholars hold that it does <strong>not</strong>, for the following reasons:</p><ul><li>Ḥanafī Fiqh requires that both parties (or their representatives) and the witnesses be <em>physically present</em> in the same gathering for the Nikāḥ to be valid.</li><li>A video call, despite its real-time nature, does not replicate physical presence (<em>ḥuḍūr</em>), which is a condition stipulated in the classical texts.</li><li>There is also a risk of fraud, technical interruption, and uncertainty in identity verification.</li></ul><h4>The Valid Alternative: Tawkīl (Appointing a Wakīl)</h4><p>The practical and widely-accepted solution is for the groom to appoint a <em>wakīl</em> (authorized representative) in New York via a formal <em>tawkīl</em> (delegation). The <em>wakīl</em> physically represents the groom at the Nikāḥ ceremony, accepting on his behalf. This is fully valid and has been used for centuries in Islamic tradition.</p><p>The delegation can be done in writing (witnessed and notarized) or verbally in front of witnesses in Pakistan, and the <em>wakīl</em> then acts on the groom's behalf in New York. We advise consulting the Darul Uloom to arrange this properly.</p>",
+      "mufti": "Mufti Manzoor",
+      "date": "2025-03-01",
+      "category": "Marriage & Family",
+      "keywords": ["nikah", "marriage", "video call", "online", "wakil", "tawkeel", "ijab", "qabool", "witnesses", "validity"],
+      "references": [
+        "Raddul Muḥtār (Ibn 'Ābidīn), Vol. 4",
+        "Al-Hidāyah (Al-Marghinānī), Vol. 1",
+        "Fatāwā Hindiyya, Vol. 1",
+        "Fatāwā Dārul Uloom Deoband — Kitāb al-Nikāḥ",
+        "Fatāwā Usmānī, Vol. 2"
+      ],
+      "madhab": "Hanafi"
+    },
+    {
+      "id": "7",
+      "slug": "zakaat-eligible-recipients",
+      "title": "Can Zakāt Be Given to Non-Muslims or Non-Zakāt Eligible Relatives?",
+      "arabic_title": "هَلْ يَجُوزُ إِعْطَاءُ الزَّكَاةِ لِغَيْرِ الْمُسْلِمِ",
+      "question": "I have a non-Muslim neighbor who is in financial hardship. Can I give them my Zakāt? Also, can I give Zakāt to my parents or adult children who are poor?",
+      "answer": "<p>These are two distinct questions, both of which touch on the conditions for valid Zakāt disbursement.</p><h4>1. Giving Zakāt to Non-Muslims</h4><p>According to the Ḥanafī school and the majority of classical scholars, Zakāt <strong>cannot be given to a non-Muslim</strong>. The Qur'ānic verse (Al-Tawbah: 60) that defines the eight categories of Zakāt recipients is understood to apply exclusively to Muslims. This is the agreed-upon (<em>muttafaq 'alayhi</em>) position.</p><p>However, Islam strongly encourages giving <em>nafl</em> (voluntary) charity — Ṣadaqah — to those in need regardless of their faith. You are absolutely encouraged to help your non-Muslim neighbor through voluntary charity, which also carries great reward.</p><h4>2. Giving Zakāt to Parents or Adult Children</h4><p>According to the Ḥanafī madhhab, Zakāt <strong>cannot be given to one's ascendants</strong> (parents, grandparents) or <strong>descendants</strong> (children, grandchildren), even if they are poor, because there is a financial obligation (<em>nafaqah</em>) relationship between them. Giving Zakāt in such a case would essentially benefit the giver as well, which is not valid.</p><p>Zakāt <strong>can</strong> be given to siblings, aunts, uncles, and other relatives who are eligible, provided the other conditions of Zakāt disbursement are met. In fact, giving Zakāt to a poor relative earns a double reward: the reward of Zakāt and the reward of upholding family ties (<em>ṣilat al-raḥm</em>).</p><p><strong>Summary:</strong></p><ul><li>Non-Muslim neighbor: Give Ṣadaqah (voluntary charity), not Zakāt.</li><li>Poor parents/children: Cannot receive your Zakāt; you are obligated to support them through <em>nafaqah</em> if able.</li><li>Poor siblings/cousins: May receive Zakāt — this is highly encouraged.</li></ul>",
+      "mufti": "Mufti Mizanur Rahman",
+      "date": "2025-03-10",
+      "category": "Zakaat",
+      "keywords": ["zakaat", "non-muslim", "recipients", "parents", "children", "relatives", "sadaqah", "nafaqah", "eligible", "eight categories"],
+      "references": [
+        "Surah Al-Tawbah, Āyah 60",
+        "Raddul Muḥtār (Ibn 'Ābidīn), Vol. 3",
+        "Al-Hidāyah (Al-Marghinānī), Vol. 1",
+        "Fatāwā Hindiyya, Vol. 1",
+        "Fatāwā Maḥmūdiyya, Vol. 14"
+      ],
+      "madhab": "Hanafi"
+    },
+    {
+      "id": "8",
+      "slug": "missed-prayers-qada",
+      "title": "Making Up Missed Prayers (Qaḍā' al-Fawā'it)",
+      "arabic_title": "قَضَاءُ الْفَوَائِتِ مِنَ الصَّلَوَاتِ",
+      "question": "I was not practicing Islam for several years and missed thousands of prayers. Do I have to make all of them up? How should I go about it?",
+      "answer": "<p>First and foremost, we commend your return to practicing Islam and making amends. This in itself is a tremendous act of faith and a sign of Allah's mercy upon you.</p><h4>Is Qaḍā' Obligatory?</h4><p>Yes, according to the Ḥanafī school, making up missed obligatory prayers (<em>qaḍā' al-fawā'it</em>) is <strong>obligatory</strong> (<em>wājib</em>). This applies to all five daily prayers (Fajr, Ẓuhr, 'Aṣr, Maghrib, 'Ishā') and the Witr prayer, which is also wājib in the Ḥanafī school. The sunnah prayers of missed years do <em>not</em> need to be made up.</p><h4>How to Approach a Large Number of Missed Prayers</h4><p>When missed prayers are so numerous that their exact number cannot be recalled, scholars have advised the following:</p><ol><li><strong>Estimate conservatively:</strong> Estimate the number of years of missed prayers and calculate accordingly (5 wājib prayers × 365 days × number of years). It is better to overestimate than to underestimate.</li><li><strong>Make a consistent daily habit:</strong> Scholars advise praying extra prayers each day — for example, after each obligatory prayer, pray one <em>qaḍā'</em> prayer of the same name from your missed prayers.</li><li><strong>Maintain proper intention:</strong> When making up prayers, intend the specific prayer (e.g., \"the first Fajr owed to me\") rather than specifying a date.</li><li><strong>Do not overwhelm yourself:</strong> The goal is consistency. Even making up one or two prayers per day is better than attempting a large number and then abandoning the effort.</li></ol><p>Allah (SWT) is Al-Ghafūr Al-Raḥīm — the Most Forgiving, the Most Merciful. Your sincere repentance and consistent effort to rectify what has passed is beloved to Him. We encourage you to begin immediately and not to be disheartened by the magnitude of the task.</p>",
+      "mufti": "Mufti Manzoor",
+      "date": "2025-03-15",
+      "category": "Salah",
+      "keywords": ["qada", "missed prayers", "make up", "fawait", "witr", "salah", "repentance", "years", "obligatory"],
+      "references": [
+        "Raddul Muḥtār (Ibn 'Ābidīn), Vol. 2",
+        "Fatāwā Hindiyya, Vol. 1",
+        "Nūrul Īḍāḥ with Marāqil Falāḥ",
+        "Fatāwā Maḥmūdiyya, Vol. 7"
+      ],
+      "madhab": "Hanafi"
+    }
+  ]
+}
