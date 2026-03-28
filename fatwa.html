@@ -515,51 +515,6 @@
 
         <!-- SIDEBAR -->
         <div class="fatwa-detail-sidebar">
-          <!-- Meta info card -->
-          <div class="sidebar-card">
-            <h4><i class="fas fa-info-circle"></i> Fatwa Details</h4>
-            <div class="meta-item">
-              <div class="meta-icon"><i class="fas fa-user-tie"></i></div>
-              <div>
-                <div class="meta-label">Issuing Mufti</div>
-                <div class="meta-value">${f.mufti}</div>
-              </div>
-            </div>
-            <div class="meta-item">
-              <div class="meta-icon"><i class="fas fa-calendar"></i></div>
-              <div>
-                <div class="meta-label">Date Issued</div>
-                <div class="meta-value">${formatDate(f.date)}</div>
-              </div>
-            </div>
-            <div class="meta-item">
-              <div class="meta-icon"><i class="fas fa-scale-balanced"></i></div>
-              <div>
-                <div class="meta-label">Category</div>
-                <div class="meta-value">${f.category}</div>
-              </div>
-            </div>
-            <div class="meta-item">
-              <div class="meta-icon"><i class="fas fa-mosque"></i></div>
-              <div>
-                <div class="meta-label">Madhhab</div>
-                <div class="meta-value">${f.madhab || 'Hanafi'}</div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Share card -->
-          <div class="sidebar-card">
-            <h4><i class="fas fa-share-nodes"></i> Share</h4>
-            <button class="share-btn" onclick="copyLink()">
-              <i class="fas fa-link"></i> Copy Link
-            </button>
-            <a class="share-btn" style="text-decoration:none;"
-               href="https://wa.me/?text=${encodeURIComponent(f.title + ' — ' + window.location.href)}" target="_blank" rel="noopener">
-              <i class="fab fa-whatsapp"></i> Share on WhatsApp
-            </a>
-          </div>
-
           <!-- Submit question card -->
           <div class="sidebar-card" style="background:linear-gradient(135deg,var(--navy),var(--blue));border-color:transparent;">
             <h4 style="color:var(--gold);border-color:rgba(201,162,39,0.3);">
