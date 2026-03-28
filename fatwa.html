@@ -450,11 +450,6 @@
          <i class="fas fa-scale-balanced"></i> ${f.category}
        </span>`;
 
-    // References HTML
-    const refsHtml = f.references.map(r =>
-      `<div class="ref-item"><i class="fas fa-book-open"></i><span>${r}</span></div>`
-    ).join('');
-
     // Keywords HTML
     const kwHtml = f.keywords.map(k =>
       `<a href="iftaa.html?kw=${encodeURIComponent(k)}" class="kw-tag"><i class="fas fa-tag"></i>${k}</a>`
@@ -474,13 +469,7 @@
           <span class="answer-label"><i class="fas fa-check-circle"></i> The Answer</span>
           <div class="fatwa-answer-body">${f.answer}</div>
 
-          <!-- Keywords -->
-          <div class="fatwa-keywords-section">
-            <h4><i class="fas fa-tags" style="color:var(--gold);margin-right:0.4rem;"></i> Keywords &amp; Related Topics</h4>
-            <div class="keywords-list">${kwHtml}</div>
-          </div>
-
-          <!-- Closing attribution -->
+          <!-- Closing attribution (within the fatwa body) -->
           <div class="fatwa-closing">
             <p class="allah-knows-best">And Allah ﷻ knows best.</p>
             <div class="attribution-grid">
@@ -515,6 +504,12 @@
               to specific situations.
               <a href="contact.html" style="color:var(--gold);font-weight:600;">Contact us here.</a>
             </p>
+          </div>
+
+          <!-- Keywords (bottom) -->
+          <div class="fatwa-keywords-section">
+            <h4><i class="fas fa-tags" style="color:var(--gold);margin-right:0.4rem;"></i> Keywords &amp; Related Topics</h4>
+            <div class="keywords-list">${kwHtml}</div>
           </div>
         </div>
 
@@ -551,12 +546,6 @@
                 <div class="meta-value">${f.madhab || 'Hanafi'}</div>
               </div>
             </div>
-          </div>
-
-          <!-- References card -->
-          <div class="sidebar-card">
-            <h4><i class="fas fa-book-open"></i> References</h4>
-            ${refsHtml}
           </div>
 
           <!-- Share card -->
