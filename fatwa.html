@@ -212,6 +212,75 @@
     .share-btn:hover { border-color: var(--gold); color: var(--gold-dark); }
     .share-btn i { color: var(--gold); width: 16px; }
 
+    /* ── Closing attribution ── */
+    .fatwa-closing {
+      margin-top: 2.5rem;
+      border-top: 2px solid var(--border);
+      padding-top: 2rem;
+    }
+    .allah-knows-best {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem;
+      font-style: italic;
+      color: var(--navy);
+      margin-bottom: 1.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+    .allah-knows-best::before {
+      content: '';
+      display: inline-block;
+      width: 4px;
+      height: 1.2em;
+      background: var(--gold);
+      border-radius: 2px;
+      flex-shrink: 0;
+    }
+    .attribution-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.25rem 2rem;
+    }
+    .attribution-block {
+      background: var(--cream);
+      border-radius: var(--radius);
+      padding: 1.1rem 1.25rem;
+      border-left: 3px solid var(--gold);
+    }
+    .attribution-block .attr-role {
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-muted);
+      margin-bottom: 0.4rem;
+    }
+    .attribution-block .attr-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 1rem;
+      color: var(--navy);
+      font-weight: 600;
+      margin-bottom: 0.2rem;
+    }
+    .attribution-block .attr-title {
+      font-size: 0.82rem;
+      color: var(--text-body);
+      line-height: 1.5;
+    }
+    .attribution-date {
+      margin-top: 1.25rem;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .attribution-date i { color: var(--gold); }
+    @media (max-width: 600px) {
+      .attribution-grid { grid-template-columns: 1fr; }
+    }
+
     /* ── Not found ── */
     .fatwa-not-found {
       text-align: center;
@@ -411,8 +480,34 @@
             <div class="keywords-list">${kwHtml}</div>
           </div>
 
+          <!-- Closing attribution -->
+          <div class="fatwa-closing">
+            <p class="allah-knows-best">And Allah ﷻ knows best.</p>
+            <div class="attribution-grid">
+              <div class="attribution-block">
+                <div class="attr-role">Written by</div>
+                <div class="attr-name">Abdurrahman Khan</div>
+                <div class="attr-title">Student, Darul Iftā<br>Darul Uloom New York</div>
+              </div>
+              <div class="attribution-block">
+                <div class="attr-role">Checked &amp; Approved by</div>
+                <div class="attr-name">Mufti Mizanur Rahman</div>
+                <div class="attr-title">Head Mufti, Darul Iftāʾ</div>
+              </div>
+              <div class="attribution-block" style="grid-column: 2;">
+                <div class="attr-role">Checked &amp; Approved by</div>
+                <div class="attr-name">Mufti Manzoor Ahmad</div>
+                <div class="attr-title">Mufti, Darul Iftāʾ</div>
+              </div>
+            </div>
+            <div class="attribution-date">
+              <i class="fas fa-calendar-alt"></i>
+              Jan 23, 2026 &nbsp;·&nbsp; Sha'bān 4, 1447
+            </div>
+          </div>
+
           <!-- Disclaimer -->
-          <div style="margin-top:2.5rem;background:var(--cream);border:1px solid var(--border);border-radius:var(--radius);padding:1.25rem 1.5rem;">
+          <div style="margin-top:2rem;background:var(--cream);border:1px solid var(--border);border-radius:var(--radius);padding:1.25rem 1.5rem;">
             <p style="font-size:0.82rem;color:var(--text-muted);margin:0;line-height:1.7;">
               <strong style="color:var(--navy);">Disclaimer:</strong>
               This fatwa is based on the question as presented and the Ḥanafī school of jurisprudence.
