@@ -618,18 +618,24 @@
 
   // ── Load from data/fatwas.json + localStorage ─────────────────────────────
   async function loadFatwas() {
+    let jsonFatwas = [];
     try {
       const res = await fetch('data/fatwas.json');
       const json = await res.json();
-      allFatwas = json.fatwas || [];
-    } catch(e) {
-      allFatwas = [];
-    }
+      jsonFatwas = json.fatwas || [];
+    } catch(e) { jsonFatwas = []; }
 
-    // Merge any locally-added fatwas
-    const local = JSON.parse(localStorage.getItem('duny_fatwas') || '[]');
-    allFatwas = [...local, ...allFatwas];
+    const local     = getLocal();
+    const deleted   = getDeleted();
+    const overrides = getOverrides();
+    const localSlugs = new Set(local.map(f => f.slug));
 
+    // Apply overrides and filter deleted from JSON fatwas
+    const processedJson = jsonFatwas
+      .filter(f => !deleted.includes(f.slug) && !localSlugs.has(f.slug))
+      .map(f => overrides[f.slug] ? { ...f, ...overrides[f.slug] } : f);
+
+    allFatwas = [...local, ...processedJson];
     renderFatwas();
   }
 
@@ -801,14 +807,14 @@
             <div class="adm-section">
               <h3><i class="fas fa-question-circle"></i> Question</h3>
               <div class="adm-fld">
-                <textarea id="u-question" placeholder="Write the question as submitted…" required></textarea>
+                <div id="u-question" class="adm-rich-editor" contenteditable="true" data-placeholder="Write the question as submitted…"></div>
               </div>
             </div>
 
             <div class="adm-section">
               <h3><i class="fas fa-scroll"></i> Answer</h3>
               <div class="adm-fld">
-                <textarea id="u-answer" class="tall" placeholder="Write the full fatwa answer. HTML tags like &lt;p&gt;, &lt;strong&gt;, &lt;ul&gt; are supported." required></textarea>
+                <div id="u-answer" class="adm-rich-editor tall" contenteditable="true" data-placeholder="Paste or type the full fatwa answer. Bold, underline, and line breaks are preserved."></div>
               </div>
             </div>
 
@@ -824,10 +830,8 @@
             <div class="adm-section">
               <h3><i class="fas fa-book-open"></i> References <span style="font-weight:400;font-size:0.82rem;">(optional)</span></h3>
               <div class="adm-fld">
-                <div class="adm-tag-wrap adm-ref-wrap" id="adm-ref-wrap" onclick="document.getElementById('adm-ref-input').focus()">
-                  <input type="text" id="adm-ref-input" dir="auto" placeholder="e.g. الفتاوى الهندية — press Enter to add…" />
-                </div>
-                <div class="adm-hint">Type each reference (Arabic or English) and press Enter. These appear on the fatwa detail page.</div>
+                <textarea id="u-refs" class="adm-refs-textarea" dir="auto" placeholder="Type or paste each reference on its own line. Arabic is supported.&#10;&#10;e.g.&#10;الفتاوى الهندية، الجزء الأول&#10;رد المحتار على الدر المختار"></textarea>
+                <div class="adm-hint">Each line = one reference. Spacing and line breaks are preserved.</div>
               </div>
             </div>
 
@@ -1090,6 +1094,9 @@
   .adm-list-del:hover { background: #dc2626; color: #fff; }
   .adm-empty { text-align: center; padding: 3rem 1rem; color: #aaa; }
   .adm-empty i { font-size: 2rem; display: block; margin-bottom: 0.6rem; }
+  .adm-src-badge { font-size: 0.65rem; padding: 0.1rem 0.45rem; border-radius: 20px; font-weight: 600; vertical-align: middle; margin-left: 0.3rem; }
+  .adm-src-local  { background: #dbeafe; color: #1d4ed8; }
+  .adm-src-json   { background: #dcfce7; color: #15803d; }
 
   /* Tab header */
   .adm-tab-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 1.5rem; gap: 1rem; }
@@ -1105,6 +1112,35 @@
   }
   .adm-cancel-edit:hover { background: #ffc107; color: #333; }
   .adm-hint { font-size: 0.75rem; color: #999; margin-top: 0.3rem; }
+
+  /* Rich contenteditable editor */
+  .adm-rich-editor {
+    border: 1.5px solid #e0e4ea; border-radius: 8px;
+    padding: 0.7rem 0.9rem; font-size: 0.9rem;
+    font-family: 'Poppins', sans-serif; color: #333;
+    background: #fafbfc; outline: none; min-height: 110px;
+    line-height: 1.7; transition: border-color 0.2s, box-shadow 0.2s;
+    white-space: pre-wrap; overflow-y: auto;
+  }
+  .adm-rich-editor.tall { min-height: 260px; }
+  .adm-rich-editor:focus { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(201,162,39,0.1); background: #fff; }
+  .adm-rich-editor:empty::before {
+    content: attr(data-placeholder); color: #aaa; pointer-events: none;
+  }
+  .adm-rich-editor b, .adm-rich-editor strong { font-weight: 700; }
+  .adm-rich-editor u { text-decoration: underline; }
+  .adm-rich-editor em, .adm-rich-editor i { font-style: italic; }
+
+  /* References textarea */
+  .adm-refs-textarea {
+    width: 100%; border: 1.5px solid #e0e4ea; border-radius: 8px;
+    padding: 0.85rem 1rem; font-family: 'Amiri', serif;
+    font-size: 1.05rem; color: #222; background: #fafbfc;
+    outline: none; min-height: 160px; line-height: 2;
+    resize: vertical; transition: border-color 0.2s, box-shadow 0.2s;
+    direction: auto;
+  }
+  .adm-refs-textarea:focus { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(201,162,39,0.1); background: #fff; }
 
   .adm-btn-spinner {
     display: none; width: 15px; height: 15px;
@@ -1193,39 +1229,8 @@
     if (tab === 'manage') renderManageList();
   }
 
-  // ══ Tag inputs (keywords + references) ════════════════════════
+  // ══ Keywords tag input ════════════════════════════════════════
   let admKeywords = [];
-  let admRefs = [];
-
-  function makeTagSystem(arr, wrapId, inputId, pillClass) {
-    function add(v) {
-      v = v.trim().replace(/,$/, '').trim();
-      if (!v || arr.includes(v)) return;
-      arr.push(v);
-      render();
-    }
-    function remove(i) { arr.splice(i, 1); render(); }
-    function render() {
-      const wrap = document.getElementById(wrapId);
-      const input = document.getElementById(inputId);
-      wrap.querySelectorAll('.' + pillClass).forEach(p => p.remove());
-      arr.forEach((val, i) => {
-        const pill = document.createElement('div');
-        pill.className = 'adm-kw-pill ' + pillClass;
-        pill.innerHTML = `${esc(val)}<button type="button" onclick="(${remove.toString()})(${i})">×</button>`;
-        wrap.insertBefore(pill, input);
-      });
-    }
-    const input = document.getElementById(inputId);
-    input.addEventListener('keydown', function(e) {
-      if (e.key === 'Enter' || e.key === ',') { e.preventDefault(); add(this.value); this.value = ''; }
-      else if (e.key === 'Backspace' && !this.value && arr.length) { arr.splice(arr.length-1,1); render(); }
-    });
-    input.addEventListener('blur', function() { if (this.value.trim()) { add(this.value); this.value = ''; } });
-    return { add, remove, render };
-  }
-
-  // Can't use makeTagSystem cleanly with closures referencing arr, so use direct approach:
   function admAddKw(v) {
     v = v.trim().replace(/,$/, '').trim();
     if (!v || admKeywords.includes(v)) return;
@@ -1251,38 +1256,75 @@
     if (this.value.trim()) { admAddKw(this.value); this.value = ''; }
   });
 
-  function admAddRef(v) {
-    v = v.trim().replace(/,$/, '').trim();
-    if (!v || admRefs.includes(v)) return;
-    admRefs.push(v); admRenderRefs();
+  // ══ Rich editor (contenteditable) helpers ══════════════════════
+  function getRich(id) {
+    return document.getElementById(id).innerHTML.trim();
   }
-  function admRemoveRef(i) { admRefs.splice(i, 1); admRenderRefs(); }
-  function admRenderRefs() {
-    const wrap = document.getElementById('adm-ref-wrap');
-    const input = document.getElementById('adm-ref-input');
-    wrap.querySelectorAll('.adm-ref-pill').forEach(p => p.remove());
-    admRefs.forEach((ref, i) => {
-      const pill = document.createElement('div');
-      pill.className = 'adm-kw-pill adm-ref-pill';
-      pill.style.cssText = 'background:#2c3e50;direction:auto;font-family:Amiri,serif;font-size:0.82rem;';
-      pill.innerHTML = `${esc(ref)}<button type="button" onclick="admRemoveRef(${i})">×</button>`;
-      wrap.insertBefore(pill, input);
+  function setRich(id, content) {
+    // If content looks like plain text (no HTML tags), convert newlines
+    const hasHtml = /<[a-z][\s\S]*>/i.test(content || '');
+    if (!hasHtml && content) {
+      content = content
+        .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+        .replace(/\r\n/g,'\n').replace(/\n/g,'<br>');
+    }
+    document.getElementById(id).innerHTML = content || '';
+  }
+  function clearRich(id) { document.getElementById(id).innerHTML = ''; }
+
+  // Paste sanitizer: keep bold, underline, italic, line breaks; strip everything else
+  function sanitizePastedHtml(html) {
+    const div = document.createElement('div');
+    div.innerHTML = html;
+    (function clean(node) {
+      const allowed = new Set(['STRONG','B','EM','I','U','BR','P','DIV','SPAN','UL','OL','LI']);
+      Array.from(node.childNodes).forEach(child => {
+        if (child.nodeType === 3) return; // text node — keep
+        if (child.nodeType === 1) {
+          if (!allowed.has(child.tagName)) {
+            while (child.firstChild) node.insertBefore(child.firstChild, child);
+            node.removeChild(child);
+          } else {
+            Array.from(child.attributes).forEach(a => { if (a.name !== 'dir') child.removeAttribute(a.name); });
+            clean(child);
+          }
+        }
+      });
+    })(div);
+    return div.innerHTML;
+  }
+
+  function setupRichEditor(id) {
+    const el = document.getElementById(id);
+    el.addEventListener('paste', function(e) {
+      e.preventDefault();
+      const html = e.clipboardData.getData('text/html');
+      const text = e.clipboardData.getData('text/plain');
+      let content;
+      if (html) {
+        content = sanitizePastedHtml(html);
+      } else {
+        content = text
+          .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+          .replace(/\r\n/g,'\n').replace(/\n/g,'<br>');
+      }
+      document.execCommand('insertHTML', false, content);
     });
   }
-  document.getElementById('adm-ref-input').addEventListener('keydown', function(e) {
-    if (e.key === 'Enter') { e.preventDefault(); admAddRef(this.value); this.value = ''; }
-    else if (e.key === 'Backspace' && !this.value && admRefs.length) admRemoveRef(admRefs.length - 1);
-  });
-  document.getElementById('adm-ref-input').addEventListener('blur', function() {
-    if (this.value.trim()) { admAddRef(this.value); this.value = ''; }
-  });
+  setupRichEditor('u-question');
+  setupRichEditor('u-answer');
 
-  // ══ LocalStorage ═══════════════════════════════════════════════
-  function getLocal() { try { return JSON.parse(localStorage.getItem('duny_fatwas') || '[]'); } catch { return []; } }
-  function saveLocal(arr) { localStorage.setItem('duny_fatwas', JSON.stringify(arr)); }
+  // ══ LocalStorage + overrides/deletions ════════════════════════
+  function getLocal()    { try { return JSON.parse(localStorage.getItem('duny_fatwas')    || '[]');  } catch { return []; } }
+  function saveLocal(a)  { localStorage.setItem('duny_fatwas', JSON.stringify(a)); }
+  function getDeleted()  { try { return JSON.parse(localStorage.getItem('duny_deleted')   || '[]');  } catch { return []; } }
+  function saveDeleted(a){ localStorage.setItem('duny_deleted', JSON.stringify(a)); }
+  function getOverrides(){ try { return JSON.parse(localStorage.getItem('duny_overrides') || '{}');  } catch { return {}; } }
+  function saveOverrides(o){ localStorage.setItem('duny_overrides', JSON.stringify(o)); }
+  function isLocalFatwa(slug){ return getLocal().some(f => f.slug === slug); }
   function toSlug(s) { return s.toLowerCase().replace(/[^\w\s-]/g,'').replace(/\s+/g,'-').replace(/-+/g,'-').replace(/^-|-$/g,''); }
 
-  // ══ Upload / Edit submit ════════════════════════════════════════
+  // ══ Upload / Edit submit ══════════════════════════════════════
   document.getElementById('adm-upload-form').addEventListener('submit', function(e) {
     e.preventDefault();
     const title    = document.getElementById('u-title').value.trim();
@@ -1291,39 +1333,51 @@
     const date     = document.getElementById('u-date').value;
     const madhab   = document.getElementById('u-madhab').value;
     const student  = document.getElementById('u-student').value.trim();
-    const question = document.getElementById('u-question').value.trim();
-    const answer   = document.getElementById('u-answer').value.trim();
+    const question = getRich('u-question');
+    const answer   = getRich('u-answer');
+    const refsRaw  = document.getElementById('u-refs').value;
     const editSlug = document.getElementById('u-edit-slug').value;
+
     if (!title || !category || !date || !student || !question || !answer) {
       alert('Please fill in all required fields.'); return;
     }
+
+    // Split references by newline, keep non-empty lines
+    const references = refsRaw.split('\n').map(r => r.trim()).filter(Boolean);
+
     const btn = document.getElementById('adm-upload-btn');
     btn.classList.add('loading');
     document.getElementById('upload-btn-text').style.display = 'none';
+
     setTimeout(() => {
       btn.classList.remove('loading');
       document.getElementById('upload-btn-text').style.display = '';
-      let existing = getLocal();
       const isEdit = !!editSlug;
 
       if (isEdit) {
-        // Replace existing entry with same slug
-        const idx = existing.findIndex(f => f.slug === editSlug);
-        const oldFatwa = idx >= 0 ? existing[idx] : {};
-        const updated = { ...oldFatwa, title, arabic_title: arabic, question, answer,
-          written_by: student, date, category, keywords: [...admKeywords],
-          references: [...admRefs], madhab };
-        if (idx >= 0) existing[idx] = updated;
-        else existing.unshift(updated);
-        saveLocal(existing);
+        const updated = { slug: editSlug, title, arabic_title: arabic, question, answer,
+          written_by: student, date, category, keywords: [...admKeywords], references, madhab };
+        if (isLocalFatwa(editSlug)) {
+          const arr = getLocal();
+          const idx = arr.findIndex(f => f.slug === editSlug);
+          if (idx >= 0) { updated.id = arr[idx].id; arr[idx] = updated; }
+          else arr.unshift(updated);
+          saveLocal(arr);
+        } else {
+          // JSON fatwa — save override
+          const overrides = getOverrides();
+          overrides[editSlug] = updated;
+          saveOverrides(overrides);
+        }
         allFatwas = allFatwas.map(f => f.slug === editSlug ? updated : f);
         document.getElementById('success-msg-text').textContent = 'Fatwa updated!';
       } else {
+        const existing = getLocal();
         const newId = existing.length ? Math.max(...existing.map(f => parseInt(f.id)||0)) + 1 : 100;
         const slug = toSlug(title) || 'fatwa-' + newId;
         const fatwa = { id: newId, slug, title, arabic_title: arabic, question, answer,
           mufti: 'Darul Uloom New York', written_by: student,
-          date, category, keywords: [...admKeywords], references: [...admRefs], madhab };
+          date, category, keywords: [...admKeywords], references, madhab };
         saveLocal([fatwa, ...existing]);
         allFatwas = [fatwa, ...allFatwas];
         document.getElementById('success-msg-text').textContent = 'Fatwa uploaded!';
@@ -1340,10 +1394,10 @@
     document.getElementById('adm-upload-form').reset();
     document.getElementById('u-date').value = new Date().toISOString().split('T')[0];
     document.getElementById('u-edit-slug').value = '';
+    clearRich('u-question'); clearRich('u-answer');
+    document.getElementById('u-refs').value = '';
     admKeywords = []; admRenderKw();
-    admRefs = []; admRenderRefs();
     document.getElementById('upload-success').classList.remove('show');
-    // Reset form header back to Upload mode
     document.getElementById('form-mode-title').innerHTML = '<i class="fas fa-upload"></i> Upload New Fatwa';
     document.getElementById('form-mode-sub').textContent = 'Fill in all required fields and click Upload.';
     document.getElementById('upload-btn-text').innerHTML = '<i class="fas fa-upload"></i> Upload Fatwa';
@@ -1351,28 +1405,25 @@
   }
   function dismissSuccess() { document.getElementById('upload-success').classList.remove('show'); }
 
-  // ══ Edit mode ══════════════════════════════════════════════════
-  function admEditFatwa(i) {
-    const fatwas = getLocal();
-    const f = fatwas[i];
+  // ══ Edit mode ═════════════════════════════════════════════════
+  function admEditFatwa(slug) {
+    // Find in allFatwas (covers both JSON and local)
+    const f = allFatwas.find(x => x.slug === slug);
     if (!f) return;
     switchTab('upload');
-    // Fill form
     document.getElementById('u-title').value    = f.title || '';
     document.getElementById('u-arabic').value   = f.arabic_title || '';
     document.getElementById('u-category').value = f.category || '';
     document.getElementById('u-date').value     = f.date || '';
     document.getElementById('u-madhab').value   = f.madhab || 'Hanafi';
     document.getElementById('u-student').value  = f.written_by || '';
-    document.getElementById('u-question').value = f.question || '';
-    document.getElementById('u-answer').value   = f.answer || '';
+    setRich('u-question', f.question || '');
+    setRich('u-answer', f.answer || '');
+    document.getElementById('u-refs').value = (f.references || []).join('\n');
     document.getElementById('u-edit-slug').value = f.slug;
-    // Tags
     admKeywords = [...(f.keywords || [])]; admRenderKw();
-    admRefs = [...(f.references || [])]; admRenderRefs();
-    // Update UI to edit mode
     document.getElementById('form-mode-title').innerHTML = '<i class="fas fa-pen"></i> Edit Fatwa';
-    document.getElementById('form-mode-sub').textContent = 'You are editing an existing fatwa. Click Save Changes when done.';
+    document.getElementById('form-mode-sub').textContent = 'Editing existing fatwa. Click Save Changes when done.';
     document.getElementById('upload-btn-text').innerHTML = '<i class="fas fa-save"></i> Save Changes';
     document.getElementById('cancel-edit-btn').style.display = 'flex';
     document.getElementById('upload-success').classList.remove('show');
@@ -1380,34 +1431,44 @@
   }
   function cancelEdit() { clearUploadForm(); }
 
-  // ══ Manage list ════════════════════════════════════════════════
+  // ══ Manage list — shows ALL fatwas (JSON + local) ══════════════
   function renderManageList() {
-    const fatwas = getLocal();
     const el = document.getElementById('adm-fatwa-list');
-    if (!fatwas.length) {
-      el.innerHTML = '<div class="adm-empty"><i class="fas fa-inbox"></i>No fatwas uploaded yet.</div>'; return;
+    if (!allFatwas.length) {
+      el.innerHTML = '<div class="adm-empty"><i class="fas fa-inbox"></i>No fatwas yet.</div>'; return;
     }
-    el.innerHTML = fatwas.map((f, i) => `
+    el.innerHTML = allFatwas.map(f => {
+      const local = isLocalFatwa(f.slug);
+      const badge = local
+        ? '<span class="adm-src-badge adm-src-local">Local</span>'
+        : '<span class="adm-src-badge adm-src-json">Published</span>';
+      return `
       <div class="adm-list-item">
         <div class="adm-list-dot"></div>
         <div class="adm-list-info">
-          <div class="adm-list-title">${esc(f.title)}</div>
-          <div class="adm-list-meta">${esc(f.category)} &nbsp;·&nbsp; ${f.date} &nbsp;·&nbsp; ${esc(f.written_by || '')}</div>
+          <div class="adm-list-title">${esc(f.title)} ${badge}</div>
+          <div class="adm-list-meta">${esc(f.category)} &nbsp;·&nbsp; ${f.date}${f.written_by ? ' &nbsp;·&nbsp; ' + esc(f.written_by) : ''}</div>
         </div>
         <div class="adm-list-btns">
           <a href="fatwa.html?slug=${encodeURIComponent(f.slug)}" target="_blank" class="adm-list-btn adm-list-view"><i class="fas fa-eye"></i> View</a>
-          <button class="adm-list-btn adm-list-edit" onclick="admEditFatwa(${i})"><i class="fas fa-pen"></i> Edit</button>
-          <button class="adm-list-btn adm-list-del" onclick="admDeleteFatwa(${i})"><i class="fas fa-trash"></i> Delete</button>
+          <button class="adm-list-btn adm-list-edit" onclick="admEditFatwa('${f.slug}')"><i class="fas fa-pen"></i> Edit</button>
+          <button class="adm-list-btn adm-list-del"  onclick="admDeleteFatwa('${f.slug}')"><i class="fas fa-trash"></i> Delete</button>
         </div>
-      </div>`).join('');
+      </div>`;
+    }).join('');
   }
 
-  function admDeleteFatwa(i) {
-    if (!confirm('Delete this fatwa? This cannot be undone.')) return;
-    const arr = getLocal();
-    const deleted = arr.splice(i, 1)[0];
-    saveLocal(arr);
-    allFatwas = allFatwas.filter(f => f.slug !== deleted.slug);
+  function admDeleteFatwa(slug) {
+    if (!confirm('Delete this fatwa?')) return;
+    if (isLocalFatwa(slug)) {
+      const arr = getLocal().filter(f => f.slug !== slug);
+      saveLocal(arr);
+    } else {
+      // JSON fatwa — mark as deleted
+      const del = getDeleted();
+      if (!del.includes(slug)) { del.push(slug); saveDeleted(del); }
+    }
+    allFatwas = allFatwas.filter(f => f.slug !== slug);
     renderFatwas();
     renderManageList();
   }
