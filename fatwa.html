@@ -269,6 +269,59 @@
     }
     .fatwa-not-found i { font-size: 3.5rem; color: var(--border); margin-bottom: 1rem; display: block; }
 
+    /* ── Fatwa navigation ── */
+    .fatwa-nav-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-top: 3rem;
+      padding-top: 2rem;
+      border-top: 2px solid var(--border);
+      flex-wrap: wrap;
+    }
+    .fatwa-nav-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.65rem 1.25rem;
+      border-radius: 10px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      font-family: 'Poppins', sans-serif;
+      text-decoration: none;
+      transition: all 0.2s;
+      border: 2px solid var(--border);
+      color: var(--navy);
+      background: #fff;
+    }
+    .fatwa-nav-btn:hover { border-color: var(--gold); color: var(--gold-dark); }
+    .fatwa-nav-btn.all { background: var(--navy); color: #fff; border-color: var(--navy); }
+    .fatwa-nav-btn.all:hover { background: #1e3a8a; border-color: #1e3a8a; color: #fff; }
+    .fatwa-nav-btn.disabled { opacity: 0.35; pointer-events: none; }
+    .fatwa-nav-label { font-size: 0.72rem; font-weight: 400; color: var(--text-muted); display: block; }
+
+    /* ── Admin floating button ── */
+    #fatwa-admin-fab {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      width: 46px;
+      height: 46px;
+      background: var(--navy);
+      color: rgba(255,255,255,0.5);
+      border: none;
+      border-radius: 50%;
+      font-size: 0.9rem;
+      cursor: pointer;
+      z-index: 500;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+      transition: color 0.2s, background 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    #fatwa-admin-fab:hover { color: var(--gold); background: #162d55; }
   </style>
 </head>
 <body>
@@ -552,17 +605,23 @@
       return;
     }
 
-    // Check localStorage first (admin-added fatwas)
+    // Load all fatwas (for next/prev navigation)
     const local = JSON.parse(localStorage.getItem('duny_fatwas') || '[]');
-    let fatwa = local.find(f => f.slug === slug);
+    const deleted = JSON.parse(localStorage.getItem('duny_deleted') || '[]');
+    const hidden  = JSON.parse(localStorage.getItem('duny_hidden')  || '[]');
+    let jsonFatwas = [];
+    try {
+      const res = await fetch('data/fatwas.json');
+      const json = await res.json();
+      jsonFatwas = (json.fatwas || []).filter(f => !deleted.includes(f.slug) && !local.some(l => l.slug === f.slug));
+    } catch(e) {}
 
-    if (!fatwa) {
-      try {
-        const res = await fetch('data/fatwas.json');
-        const json = await res.json();
-        fatwa = json.fatwas.find(f => f.slug === slug);
-      } catch(e) { fatwa = null; }
-    }
+    // All visible fatwas sorted newest first
+    const allVisible = [...local, ...jsonFatwas]
+      .filter(f => !hidden.includes(f.slug))
+      .sort((a, b) => new Date(b.date) - new Date(a.date));
+
+    const fatwa = allVisible.find(f => f.slug === slug);
 
     if (!fatwa) {
       document.getElementById('hero-title').textContent = 'Fatwa Not Found';
@@ -577,6 +636,32 @@
     }
 
     renderFatwa(fatwa);
+
+    // Next / Previous navigation
+    const idx  = allVisible.findIndex(f => f.slug === slug);
+    const prev = allVisible[idx - 1]; // newer
+    const next = allVisible[idx + 1]; // older
+
+    const navBar = document.createElement('div');
+    navBar.className = 'fatwa-nav-bar';
+    navBar.innerHTML = `
+      ${prev
+        ? `<a href="fatwa.html?slug=${encodeURIComponent(prev.slug)}" class="fatwa-nav-btn">
+             <i class="fas fa-arrow-left"></i>
+             <span><span class="fatwa-nav-label">Previous</span>${prev.title}</span>
+           </a>`
+        : `<span class="fatwa-nav-btn disabled"><i class="fas fa-arrow-left"></i> Previous</span>`}
+      <a href="iftaa.html" class="fatwa-nav-btn all">
+        <i class="fas fa-scroll"></i> All Fatāwā
+      </a>
+      ${next
+        ? `<a href="fatwa.html?slug=${encodeURIComponent(next.slug)}" class="fatwa-nav-btn">
+             <span><span class="fatwa-nav-label">Next</span>${next.title}</span>
+             <i class="fas fa-arrow-right"></i>
+           </a>`
+        : `<span class="fatwa-nav-btn disabled">Next <i class="fas fa-arrow-right"></i></span>`}
+    `;
+    document.getElementById('fatwa-content').appendChild(navBar);
   }
 
   // Inject inline fatwa cat badge CSS that lives on the listing page
@@ -602,6 +687,10 @@
 
   loadFatwa();
   </script>
+
+  <button id="fatwa-admin-fab" title="Admin Login" onclick="window.location.href='iftaa.html#admin'">
+    <i class="fas fa-lock"></i>
+  </button>
 
   <script src="js/main.js"></script>
 </body>

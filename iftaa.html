@@ -540,9 +540,7 @@
   function buildCard(f) {
     const excerpt = stripHtml(f.answer).slice(0, 160).trim() + '…';
     const cls = catClass[f.category] || 'cat-general';
-    const kwHtml = f.keywords.slice(0, 5).map(k =>
-      `<button class="kw-pill" data-kw="${k}" onclick="filterByKeyword('${k}', event)">${k}</button>`
-    ).join('');
+    const writtenBy = f.written_by ? `<span><i class="fas fa-pen-nib"></i> ${f.written_by}</span>` : '';
 
     return `
       <a href="fatwa.html?slug=${f.slug}" class="fatwa-card">
@@ -557,8 +555,8 @@
         <div class="fatwa-card-footer">
           <div class="fatwa-meta-row">
             <span><i class="fas fa-calendar"></i> ${formatDate(f.date)}</span>
+            ${writtenBy}
           </div>
-          <div class="fatwa-keywords">${kwHtml}</div>
         </div>
       </a>`;
   }
@@ -589,7 +587,8 @@
         f.question.toLowerCase().includes(q) ||
         stripHtml(f.answer).toLowerCase().includes(q) ||
         f.keywords.some(k => k.toLowerCase().includes(q)) ||
-        f.mufti.toLowerCase().includes(q)
+        (f.mufti || '').toLowerCase().includes(q) ||
+        (f.written_by || '').toLowerCase().includes(q)
       );
     }
 
@@ -1947,8 +1946,13 @@
       </div>`;
   }
 
-  // Auto-open panel if already logged in
-  if (sessionStorage.getItem('duny_admin') === '1') openPanel();
+  // Auto-open panel if already logged in, or if arriving from a fatwa page via #admin hash
+  if (sessionStorage.getItem('duny_admin') === '1') {
+    openPanel();
+  } else if (window.location.hash === '#admin') {
+    history.replaceState(null, '', window.location.pathname + window.location.search);
+    openAdminLogin();
+  }
   </script>
 </body>
 </html>
