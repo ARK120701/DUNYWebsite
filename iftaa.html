@@ -10,6 +10,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400&family=Poppins:wght@300;400;500;600;700&family=Amiri:wght@400;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
   <style>
     /* ---- Iftaa Search Section ---- */
     .iftaa-search-section {
@@ -703,6 +704,48 @@
     <i class="fas fa-lock"></i>
   </button>
 
+  <!-- ── Fatwa Preview Modal ── -->
+  <div id="fatwa-preview-modal" class="fp-overlay" style="display:none;">
+    <div class="fp-modal">
+      <div class="fp-modal-topbar">
+        <span class="fp-modal-title"><i class="fas fa-eye"></i> Fatwa Preview</span>
+        <div class="fp-modal-actions">
+          <button class="fp-publish-btn" onclick="submitFromPreview()"><i class="fas fa-upload"></i> Publish</button>
+          <button class="fp-close-btn" onclick="closeFatwaPreview()"><i class="fas fa-times"></i> Close</button>
+        </div>
+      </div>
+      <div class="fp-modal-body">
+        <!-- LEFT: editable fields -->
+        <div class="fp-fields">
+          <h3 class="fp-section-head">Edit Fields</h3>
+          <div class="fp-field"><label>Title</label><input type="text" id="fp-title" /></div>
+          <div class="fp-field"><label>Category</label>
+            <select id="fp-category">
+              <option value="">— Select —</option>
+              <option>Salah</option><option>Zakaat</option><option>Sawm (Fasting)</option>
+              <option>Purification</option><option value="Hajj & Umrah">Hajj &amp; Umrah</option>
+              <option value="Marriage & Family">Marriage &amp; Family</option><option>Divorce</option>
+              <option value="Business & Finance">Business &amp; Finance</option>
+              <option value="Food & Drink">Food &amp; Drink</option><option>Funerals</option>
+              <option>Inheritance</option><option>Endowments</option>
+              <option value="Oaths & Vows">Oaths &amp; Vows</option><option>General</option>
+            </select>
+          </div>
+          <div class="fp-field"><label>Date</label><input type="date" id="fp-date" /></div>
+          <div class="fp-field"><label>Written By</label><input type="text" id="fp-written-by" /></div>
+          <div class="fp-field"><label>Question</label><div id="fp-question" class="fp-rich" contenteditable="true"></div></div>
+          <div class="fp-field"><label>Answer</label><div id="fp-answer" class="fp-rich fp-rich-tall" contenteditable="true"></div></div>
+          <div class="fp-field"><label>References</label><div id="fp-refs" class="fp-rich fp-rich-refs" contenteditable="true" dir="auto"></div></div>
+        </div>
+        <!-- RIGHT: live preview -->
+        <div class="fp-preview">
+          <h3 class="fp-section-head">Live Preview</h3>
+          <div class="fp-preview-card" id="fp-preview-card"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- Back to top button (bottom-left) -->
   <button id="back-to-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="Back to top">
     <i class="fas fa-chevron-up"></i>
@@ -766,6 +809,20 @@
             <strong id="success-msg-text">Fatwa uploaded!</strong> It's now live on the Iftaa page.
             <button class="adm-success-dismiss" onclick="dismissSuccess()">Dismiss</button>
           </div>
+        </div>
+
+        <!-- PDF Upload Drop Zone -->
+        <div class="pdf-drop-zone" id="pdf-drop-zone" onclick="document.getElementById('pdf-file-input').click()">
+          <input type="file" id="pdf-file-input" accept=".pdf" style="display:none;" onchange="handlePdfUpload(this.files[0])" />
+          <div class="pdf-drop-icon"><i class="fas fa-file-pdf"></i></div>
+          <div class="pdf-drop-text">
+            <strong>Import from PDF</strong>
+            <span>Click or drag & drop a fatwa PDF — fields will be auto-filled for review</span>
+          </div>
+          <div class="pdf-drop-btn">Choose PDF</div>
+        </div>
+        <div class="pdf-parsing-status" id="pdf-parsing-status" style="display:none;">
+          <span class="pdf-spinner"></span> Parsing PDF…
         </div>
 
         <form id="adm-upload-form" novalidate>
@@ -850,6 +907,7 @@
               <span class="adm-btn-spinner" id="upload-spinner"></span>
               <span id="upload-btn-text"><i class="fas fa-upload"></i> Upload Fatwa</span>
             </button>
+            <button type="button" class="adm-preview-btn" onclick="openFatwaPreview()"><i class="fas fa-eye"></i> Preview</button>
             <button type="button" class="adm-clear-btn" onclick="clearUploadForm()"><i class="fas fa-undo"></i> Clear</button>
           </div>
         </form>
@@ -1137,6 +1195,61 @@
   .adm-list-show  { background: #dcfce7; color: #15803d; }
   .adm-list-show:hover { background: #15803d; color: #fff; }
   .adm-list-item-hidden { opacity: 0.55; }
+
+  /* ── PDF drop zone ── */
+  .pdf-drop-zone {
+    border: 2px dashed #d0d5de; border-radius: 12px; background: #f8f9fc;
+    padding: 1.4rem 1.5rem; display: flex; align-items: center; gap: 1.25rem;
+    cursor: pointer; transition: border-color 0.2s, background 0.2s; margin-bottom: 1.5rem;
+  }
+  .pdf-drop-zone:hover, .pdf-drop-zone.drag-over { border-color: var(--gold); background: #fffdf4; }
+  .pdf-drop-icon { font-size: 2rem; color: #e53e3e; flex-shrink: 0; }
+  .pdf-drop-text { flex: 1; }
+  .pdf-drop-text strong { display: block; color: #1a1a2e; font-size: 0.95rem; margin-bottom: 0.2rem; }
+  .pdf-drop-text span { color: #888; font-size: 0.8rem; }
+  .pdf-drop-btn { background: var(--navy); color: #fff; border-radius: 8px; padding: 0.5rem 1.1rem; font-size: 0.82rem; font-weight: 600; white-space: nowrap; }
+  .pdf-parsing-status { display: flex; align-items: center; gap: 0.6rem; color: #666; font-size: 0.85rem; margin-bottom: 1rem; }
+  .pdf-spinner { width: 14px; height: 14px; border: 2px solid #ddd; border-top-color: var(--gold); border-radius: 50%; animation: spin 0.7s linear infinite; display: inline-block; }
+
+  /* ── Preview button ── */
+  .adm-preview-btn { padding: 0.75rem 1.4rem; background: #f0fdf4; color: #15803d; border: 1.5px solid #bbf7d0; border-radius: 10px; font-size: 0.9rem; font-weight: 600; font-family: 'Poppins',sans-serif; cursor: pointer; display: inline-flex; align-items: center; gap: 0.45rem; transition: background 0.2s; }
+  .adm-preview-btn:hover { background: #15803d; color: #fff; border-color: #15803d; }
+
+  /* ── Fatwa Preview Modal ── */
+  .fp-overlay { position: fixed; inset: 0; z-index: 2000; background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); display: flex; align-items: stretch; }
+  .fp-modal { background: #f4f6fa; width: 100%; display: flex; flex-direction: column; }
+  .fp-modal-topbar { background: var(--navy); color: #fff; padding: 0.9rem 1.5rem; display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; }
+  .fp-modal-title { font-size: 1rem; font-weight: 600; display: flex; align-items: center; gap: 0.5rem; }
+  .fp-modal-actions { display: flex; gap: 0.6rem; }
+  .fp-publish-btn { background: var(--gold); color: var(--navy); border: none; border-radius: 8px; padding: 0.5rem 1.2rem; font-size: 0.85rem; font-weight: 700; font-family: 'Poppins',sans-serif; cursor: pointer; display: flex; align-items: center; gap: 0.4rem; }
+  .fp-publish-btn:hover { background: #b8891e; }
+  .fp-close-btn { background: rgba(255,255,255,0.1); color: #fff; border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; padding: 0.5rem 1rem; font-size: 0.85rem; font-family: 'Poppins',sans-serif; cursor: pointer; }
+  .fp-close-btn:hover { background: rgba(255,255,255,0.2); }
+  .fp-modal-body { display: grid; grid-template-columns: 380px 1fr; flex: 1; overflow: hidden; }
+  .fp-fields { padding: 1.5rem; overflow-y: auto; background: #fff; border-right: 1px solid #e4e8ef; display: flex; flex-direction: column; gap: 1rem; }
+  .fp-preview { padding: 1.5rem; overflow-y: auto; }
+  .fp-section-head { font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: #888; margin-bottom: 0.75rem; }
+  .fp-field { display: flex; flex-direction: column; gap: 0.3rem; }
+  .fp-field label { font-size: 0.75rem; font-weight: 600; color: #555; }
+  .fp-field input, .fp-field select { border: 1.5px solid #e0e4ea; border-radius: 8px; padding: 0.55rem 0.8rem; font-size: 0.88rem; font-family: 'Poppins',sans-serif; color: #333; outline: none; }
+  .fp-field input:focus, .fp-field select:focus { border-color: var(--gold); }
+  .fp-rich { border: 1.5px solid #e0e4ea; border-radius: 8px; padding: 0.6rem 0.8rem; font-size: 0.88rem; font-family: 'Poppins',sans-serif; color: #333; min-height: 80px; outline: none; white-space: pre-wrap; line-height: 1.7; }
+  .fp-rich:focus { border-color: var(--gold); }
+  .fp-rich-tall { min-height: 160px; }
+  .fp-rich-refs { font-family: 'Amiri',serif; font-size: 1rem; line-height: 2; direction: auto; }
+
+  /* Preview card (right pane) */
+  .fp-preview-card { background: #fff; border-radius: 12px; padding: 2rem 2.5rem; box-shadow: 0 4px 24px rgba(0,0,0,0.08); max-width: 780px; margin: 0 auto; }
+  .fp-prev-cat { display: inline-block; background: #eff6ff; color: #1d4ed8; border-radius: 20px; font-size: 0.72rem; font-weight: 700; padding: 0.2rem 0.8rem; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 0.75rem; }
+  .fp-prev-title { font-family: 'Playfair Display',serif; font-size: 1.6rem; color: var(--navy); margin-bottom: 0.5rem; line-height: 1.3; }
+  .fp-prev-meta { font-size: 0.8rem; color: #888; margin-bottom: 1.5rem; }
+  .fp-prev-divider { border: none; border-top: 1px solid #eee; margin: 1.25rem 0; }
+  .fp-prev-section-label { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--gold); margin-bottom: 0.5rem; }
+  .fp-prev-body { font-size: 0.97rem; color: #333; line-height: 1.85; white-space: pre-wrap; margin-bottom: 1rem; }
+  .fp-prev-refs-list { list-style: none; padding: 0; margin: 0; }
+  .fp-prev-refs-list li { font-family: 'Amiri',serif; font-size: 1.1rem; line-height: 2; color: #1a1a1a; padding: 0.25rem 0; white-space: pre-wrap; }
+  .fp-prev-attribution { background: #f8f9fc; border-left: 3px solid var(--gold); border-radius: 6px; padding: 1rem 1.25rem; margin-top: 1.5rem; font-size: 0.88rem; color: #555; line-height: 1.9; }
+  .fp-prev-allah { font-style: italic; color: var(--navy); font-weight: 600; margin-bottom: 0.4rem; }
 
   /* Tab header */
   .adm-tab-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 1.5rem; gap: 1rem; }
@@ -1530,6 +1643,218 @@
   }
 
   function esc(s) { return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+  // ══ PDF Upload & Parsing ══════════════════════════════════════
+
+  // Configure PDF.js worker
+  if (typeof pdfjsLib !== 'undefined') {
+    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+  }
+
+  // Drag & drop support on the drop zone
+  (function() {
+    const zone = document.getElementById('pdf-drop-zone');
+    zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('drag-over'); });
+    zone.addEventListener('dragleave', () => zone.classList.remove('drag-over'));
+    zone.addEventListener('drop', e => {
+      e.preventDefault(); zone.classList.remove('drag-over');
+      const file = e.dataTransfer.files[0];
+      if (file && file.type === 'application/pdf') handlePdfUpload(file);
+    });
+  })();
+
+  async function handlePdfUpload(file) {
+    if (!file) return;
+    const status = document.getElementById('pdf-parsing-status');
+    status.style.display = 'flex';
+
+    try {
+      const arrayBuffer = await file.arrayBuffer();
+      const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+      let fullText = '';
+      for (let i = 1; i <= pdf.numPages; i++) {
+        const page = await pdf.getPage(i);
+        const content = await page.getTextContent();
+        // Join items, preserving line breaks by checking y-position changes
+        let lastY = null, lineText = '';
+        for (const item of content.items) {
+          if (lastY !== null && Math.abs(item.transform[5] - lastY) > 2) {
+            fullText += lineText + '\n';
+            lineText = '';
+          }
+          lineText += item.str;
+          lastY = item.transform[5];
+        }
+        if (lineText) fullText += lineText + '\n';
+        fullText += '\n';
+      }
+      const parsed = parseFatwaText(fullText);
+      fillFormFromParsed(parsed);
+      openFatwaPreview();
+    } catch(err) {
+      alert('Could not parse PDF. Please fill in the fields manually.\n\n' + err.message);
+    } finally {
+      status.style.display = 'none';
+      document.getElementById('pdf-file-input').value = '';
+    }
+  }
+
+  function parseFatwaText(text) {
+    // Normalise line endings
+    const lines = text.replace(/\r\n/g, '\n').replace(/\r/g, '\n').split('\n');
+
+    // Patterns for section headers (case-insensitive)
+    const Q_RE   = /^\s*(question|mas[''']alah|mas'ala|query|سوال|مسئلہ)\s*[:\-]?\s*$/i;
+    const A_RE   = /^\s*(answer|jawab|fatwa|ruling|جواب|فتوی)\s*[:\-]?\s*$/i;
+    const REF_RE = /^\s*(references?|sources?|bibliography|مصادر|مراجع)\s*[:\-]?\s*$/i;
+    const WB_RE  = /^\s*(written\s*by|prepared\s*by|student|compiled\s*by)\s*[:\-]?\s*/i;
+    const AB_RE  = /^\s*(approved\s*by|checked\s*by|verified\s*by)\s*[:\-]?\s*/i;
+
+    // Also detect inline prefixes like "Question: ..."
+    const Q_INLINE   = /^\s*(question|mas[''']alah|mas'ala|query)\s*[:]\s*/i;
+    const A_INLINE   = /^\s*(answer|jawab|fatwa|ruling)\s*[:]\s*/i;
+    const REF_INLINE = /^\s*(references?)\s*[:]\s*/i;
+    const WB_INLINE  = /^\s*(written\s*by|prepared\s*by|student)\s*[:]\s*/i;
+
+    let title = '', question = '', answer = '', refs = '', writtenBy = '';
+    let section = 'title';
+    const titleLines = [], qLines = [], aLines = [], rLines = [];
+
+    for (let i = 0; i < lines.length; i++) {
+      const raw = lines[i];
+      const trimmed = raw.trim();
+
+      if (Q_RE.test(trimmed))   { section = 'question'; continue; }
+      if (A_RE.test(trimmed))   { section = 'answer';   continue; }
+      if (REF_RE.test(trimmed)) { section = 'refs';     continue; }
+
+      if (Q_INLINE.test(trimmed))   { section = 'question'; qLines.push(trimmed.replace(Q_INLINE, '')); continue; }
+      if (A_INLINE.test(trimmed))   { section = 'answer';   aLines.push(trimmed.replace(A_INLINE, '')); continue; }
+      if (REF_INLINE.test(trimmed)) { section = 'refs';     rLines.push(trimmed.replace(REF_INLINE, '')); continue; }
+
+      if (WB_RE.test(trimmed) || WB_INLINE.test(trimmed)) {
+        writtenBy = trimmed.replace(WB_RE, '').replace(WB_INLINE, '').trim();
+        section = 'skip'; continue;
+      }
+      if (AB_RE.test(trimmed)) { section = 'skip'; continue; }
+
+      if (section === 'title')    titleLines.push(raw);
+      else if (section === 'question') qLines.push(raw);
+      else if (section === 'answer')   aLines.push(raw);
+      else if (section === 'refs')     rLines.push(raw);
+    }
+
+    // Title = first non-empty line(s) before question section
+    const nonEmpty = titleLines.filter(l => l.trim());
+    title = nonEmpty.slice(0, 2).join(' ').trim();
+
+    // If no section markers found at all, treat first line as title, rest as answer
+    if (!qLines.length && !aLines.length) {
+      title = nonEmpty[0] || '';
+      answer = lines.slice(1).join('\n').trim();
+    } else {
+      question = qLines.join('\n').trim();
+      answer   = aLines.join('\n').trim();
+    }
+
+    refs = rLines.filter(l => l.trim()).join('\n').trim();
+
+    return { title, question, answer, refs, writtenBy };
+  }
+
+  function fillFormFromParsed(p) {
+    document.getElementById('u-title').value   = p.title || '';
+    if (p.writtenBy) document.getElementById('u-student').value = p.writtenBy;
+    document.getElementById('u-date').value    = new Date().toISOString().split('T')[0];
+    setRich('u-question', p.question || '');
+    setRich('u-answer',   p.answer   || '');
+    setRich('u-refs',     p.refs ? p.refs.split('\n').filter(Boolean).join('<br>') : '');
+  }
+
+  // ══ Fatwa Preview Modal ═══════════════════════════════════════
+
+  function openFatwaPreview() {
+    // Sync form → preview fields
+    document.getElementById('fp-title').value       = document.getElementById('u-title').value;
+    document.getElementById('fp-category').value    = document.getElementById('u-category').value;
+    document.getElementById('fp-date').value        = document.getElementById('u-date').value;
+    document.getElementById('fp-written-by').value  = document.getElementById('u-student').value;
+    document.getElementById('fp-question').innerHTML = document.getElementById('u-question').innerHTML;
+    document.getElementById('fp-answer').innerHTML   = document.getElementById('u-answer').innerHTML;
+    document.getElementById('fp-refs').innerHTML     = document.getElementById('u-refs').innerHTML;
+
+    renderFatwaPreviewCard();
+
+    // Live update preview as user edits fields
+    ['fp-title','fp-category','fp-date','fp-written-by'].forEach(id => {
+      document.getElementById(id).oninput = renderFatwaPreviewCard;
+    });
+    ['fp-question','fp-answer','fp-refs'].forEach(id => {
+      document.getElementById(id).oninput = renderFatwaPreviewCard;
+    });
+
+    document.getElementById('fatwa-preview-modal').style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeFatwaPreview() {
+    // Sync preview fields back to form before closing
+    document.getElementById('u-title').value    = document.getElementById('fp-title').value;
+    document.getElementById('u-category').value = document.getElementById('fp-category').value;
+    document.getElementById('u-date').value     = document.getElementById('fp-date').value;
+    document.getElementById('u-student').value  = document.getElementById('fp-written-by').value;
+    document.getElementById('u-question').innerHTML = document.getElementById('fp-question').innerHTML;
+    document.getElementById('u-answer').innerHTML   = document.getElementById('fp-answer').innerHTML;
+    document.getElementById('u-refs').innerHTML     = document.getElementById('fp-refs').innerHTML;
+
+    document.getElementById('fatwa-preview-modal').style.display = 'none';
+    document.body.style.overflow = 'hidden'; // panel still open
+  }
+
+  function submitFromPreview() {
+    closeFatwaPreview();
+    // Trigger form submit
+    document.getElementById('adm-upload-form').dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));
+  }
+
+  function renderFatwaPreviewCard() {
+    const title     = document.getElementById('fp-title').value || 'Untitled Fatwa';
+    const category  = document.getElementById('fp-category').value || 'General';
+    const date      = document.getElementById('fp-date').value || '';
+    const writtenBy = document.getElementById('fp-written-by').value || 'Student';
+    const question  = document.getElementById('fp-question').innerHTML;
+    const answer    = document.getElementById('fp-answer').innerHTML;
+    const refsHtml  = document.getElementById('fp-refs').innerHTML;
+
+    // Build refs list
+    const refItems = refsHtml
+      .split(/<br\s*\/?>|<\/div>|<\/p>/i)
+      .map(r => r.replace(/^<(?:div|p)[^>]*>/i,'').trim())
+      .filter(r => r.replace(/<[^>]+>/g,'').trim());
+
+    const refsBlock = refItems.length ? `
+      <hr class="fp-prev-divider">
+      <div class="fp-prev-section-label">References</div>
+      <ul class="fp-prev-refs-list">${refItems.map(r => `<li>${r}</li>`).join('')}</ul>` : '';
+
+    document.getElementById('fp-preview-card').innerHTML = `
+      <span class="fp-prev-cat">${esc(category)}</span>
+      <div class="fp-prev-title">${esc(title)}</div>
+      <div class="fp-prev-meta">${date ? new Date(date).toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'}) : ''}</div>
+      <hr class="fp-prev-divider">
+      <div class="fp-prev-section-label">Question</div>
+      <div class="fp-prev-body">${question || '<em style="color:#aaa">No question entered</em>'}</div>
+      <hr class="fp-prev-divider">
+      <div class="fp-prev-section-label">Answer</div>
+      <div class="fp-prev-body">${answer || '<em style="color:#aaa">No answer entered</em>'}</div>
+      ${refsBlock}
+      <div class="fp-prev-attribution">
+        <div class="fp-prev-allah">And Allah ﷻ knows best.</div>
+        Written by: ${esc(writtenBy)}<br>
+        Student, Darul Iftā, Darul Uloom New York<br>
+        Approved by: Mufti Manzoor Ahmad &amp; Mufti Mizanur Rahman
+      </div>`;
+  }
 
   // Auto-open panel if already logged in
   if (sessionStorage.getItem('duny_admin') === '1') openPanel();
