@@ -188,6 +188,7 @@
     .cat-endowments   { background: rgba(230,81,0,0.1);    color: #E65100; }
     .cat-oaths        { background: rgba(1,87,155,0.1);    color: #01579B; }
     .cat-general      { background: rgba(12,31,61,0.08);   color: var(--navy); }
+    .cat-prohibition  { background: rgba(120,40,140,0.1);  color: #6B2179; }
     .fatwa-card h3 {
       font-size: 1rem;
       margin-bottom: 0.4rem;
@@ -391,6 +392,7 @@
         <button class="cat-filter-btn" data-cat="Endowments"><i class="fas fa-hand-holding"></i> Endowments</button>
         <button class="cat-filter-btn" data-cat="Oaths & Vows"><i class="fas fa-hands-praying"></i> Oaths &amp; Vows</button>
         <button class="cat-filter-btn" data-cat="General"><i class="fas fa-circle-info"></i> General</button>
+        <button class="cat-filter-btn" data-cat="Prohibition & Permissibility"><i class="fas fa-ban"></i> Prohibition &amp; Permissibility</button>
       </div>
     </div>
   </div>
@@ -520,7 +522,8 @@
     'Inheritance':        'cat-inheritance',
     'Endowments':         'cat-endowments',
     'Oaths & Vows':       'cat-oaths',
-    'General':            'cat-general'
+    'General':            'cat-general',
+    'Prohibition & Permissibility': 'cat-prohibition'
   };
 
   // ── Strip HTML tags from a string ─────────────────────────────────────────
@@ -737,6 +740,7 @@
               <option value="Food & Drink">Food &amp; Drink</option><option>Funerals</option>
               <option>Inheritance</option><option>Endowments</option>
               <option value="Oaths & Vows">Oaths &amp; Vows</option><option>General</option>
+              <option value="Prohibition & Permissibility">Prohibition &amp; Permissibility</option>
             </select>
           </div>
           <div class="fp-field"><label>Date</label><input type="date" id="fp-date" /></div>
@@ -858,6 +862,7 @@
                     <option value="Food & Drink">Food &amp; Drink</option><option>Funerals</option>
                     <option>Inheritance</option><option>Endowments</option>
                     <option value="Oaths & Vows">Oaths &amp; Vows</option><option>General</option>
+                    <option value="Prohibition & Permissibility">Prohibition &amp; Permissibility</option>
                   </select></div>
                 <div class="adm-fld"><label>Date <span class="req">*</span></label>
                   <input type="date" id="u-date" required /></div>
@@ -1286,6 +1291,7 @@
   .fp-preview-card .cat-endowments{background:rgba(230,81,0,.1);color:#E65100}
   .fp-preview-card .cat-oaths{background:rgba(1,87,155,.1);color:#01579B}
   .fp-preview-card .cat-general{background:rgba(12,31,61,.08);color:#0C1F3D}
+  .fp-preview-card .cat-prohibition{background:rgba(120,40,140,.1);color:#6B2179}
 
   /* Tab header */
   .adm-tab-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 1.5rem; gap: 1rem; }
@@ -1899,7 +1905,8 @@
       'Business & Finance':'cat-business','Food & Drink':'cat-food','Marriage & Family':'cat-marriage',
       'Divorce':'cat-divorce','Purification':'cat-purification','Funerals':'cat-funerals',
       'Hajj & Umrah':'cat-hajj','Inheritance':'cat-inheritance','Endowments':'cat-endowments',
-      'Oaths & Vows':'cat-oaths','General':'cat-general'
+      'Oaths & Vows':'cat-oaths','General':'cat-general',
+      'Prohibition & Permissibility':'cat-prohibition'
     };
     const cls = catMap[category] || 'cat-general';
     const dateStr = date ? new Date(date + 'T12:00:00').toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'}) : '';
